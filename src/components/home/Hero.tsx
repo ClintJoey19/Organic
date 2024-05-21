@@ -23,7 +23,7 @@ const Hero = () => {
           </Button>
         </div>
       </div>
-      <div className="relative max-md:max-h-[250px] min-h-[150px] overflow-hidden rounded-xl md:rounded-b-xl">
+      <div className="relative max-md:max-h-[250px] min-h-[150px] overflow-hidden rounded-b-xl max-md:rounded-t-xl">
         <Image src="/hero.jpg" alt="hero" fill objectFit="cover" />
       </div>
     </section>

@@ -20,3 +20,16 @@ export const navlinks = [
     href: "/contact",
   },
 ];
+
+export const categories = [
+  {
+    label: "Vegetables",
+    href: "/products?category='vegetables'",
+    imageUrl: "/vegetables.jpg",
+  },
+  {
+    label: "Fruits",
+    href: "/products?category='fruits'",
+    imageUrl: "/fruits.jpg",
+  },
+];
