@@ -1,4 +1,9 @@
+import { products } from "@/constants";
 import React from "react";
+import Product from "../global/Product";
+import SeeMoreButton from "../global/SeeMoreButton";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 const FeaturedProducts = () => {
   return (
@@ -10,7 +15,24 @@ const FeaturedProducts = () => {
           praesentium?
         </p>
       </div>
-      <div></div>
+      <div className="grid grid-cols-5 max-lg:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 max-xs:grid-cols-1 gap-2">
+        {products.map(({ id, name, price, quantity, quality, imageUrl }) => (
+          <Product
+            key={id}
+            id={id}
+            name={name}
+            price={price}
+            quantity={quantity}
+            quality={quality}
+            imageUrl={imageUrl}
+          />
+        ))}
+      </div>
+      <div className="mt-4 flex justify-center">
+        <Button asChild>
+          <Link href={"/products"}>See More</Link>
+        </Button>
+      </div>
     </section>
   );
 };

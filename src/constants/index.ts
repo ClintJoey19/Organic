@@ -33,3 +33,46 @@ export const categories = [
     imageUrl: "/fruits.jpg",
   },
 ];
+
+export const products = [
+  {
+    id: "Apple",
+    name: "Apple",
+    price: 40,
+    quantity: 100,
+    quality: "A",
+    imageUrl: "/apple.webp",
+  },
+  {
+    id: "Orange",
+    name: "Orange",
+    price: 40,
+    quantity: 100,
+    quality: "A",
+    imageUrl: "/orange.jpg",
+  },
+  {
+    id: "Kiwi",
+    name: "Kiwi",
+    price: 40,
+    quantity: 100,
+    quality: "A",
+    imageUrl: "/kiwi.jpg",
+  },
+  {
+    id: "Water Melon",
+    name: "Water Melon",
+    price: 40,
+    quantity: 100,
+    quality: "A",
+    imageUrl: "/watermelon.webp",
+  },
+  {
+    id: "Banana",
+    name: "Banana",
+    price: 40,
+    quantity: 100,
+    quality: "A",
+    imageUrl: "/banana.webp",
+  },
+];
