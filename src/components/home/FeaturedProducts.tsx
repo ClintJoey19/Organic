@@ -16,17 +16,30 @@ const FeaturedProducts = () => {
         </p>
       </div>
       <div className="grid grid-cols-5 max-lg:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 max-xs:grid-cols-1 gap-2">
-        {products.map(({ id, name, price, quantity, quality, imageUrl }) => (
-          <Product
-            key={id}
-            id={id}
-            name={name}
-            price={price}
-            quantity={quantity}
-            quality={quality}
-            imageUrl={imageUrl}
-          />
-        ))}
+        {products.map(
+          ({
+            id,
+            name,
+            category,
+            price,
+            quantity,
+            quality,
+            imageUrl,
+            ratings,
+          }) => (
+            <Product
+              key={id}
+              id={id}
+              name={name}
+              category={category}
+              price={price}
+              quantity={quantity}
+              quality={quality}
+              imageUrl={imageUrl}
+              ratings={ratings}
+            />
+          )
+        )}
       </div>
       <div className="mt-4 flex justify-center">
         <Button asChild>

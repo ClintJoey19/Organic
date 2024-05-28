@@ -59,7 +59,7 @@
 
   @layer components {
     .container {
-      @apply max-w-[1220px] mx-auto;
+      @apply max-w-[1220px] mx-auto mb-8;
     }
 
     .page-title {

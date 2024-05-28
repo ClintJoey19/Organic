@@ -1,14 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { formatPrice } from "@/lib/utils";
+import { Star } from "lucide-react";
 
 interface ProductProps {
   id: string;
   name: string;
+  category: string;
   price: number;
   quantity: number;
   quality: string;
   imageUrl: string;
+  ratings: number;
 }
 
 const Product = ({
@@ -18,9 +22,10 @@ const Product = ({
   quantity,
   quality,
   imageUrl,
+  ratings,
 }: ProductProps) => {
   return (
-    <div className="w-full rounded-md hover:shadow-md transition flex flex-col overflow-hidden outline-1 outline outline-slate-200 relative">
+    <div className="w-full rounded-xl hover:shadow-md transition flex flex-col overflow-hidden border border-slate-200 relative">
       <div className="w-full h-[200px] relative overflow-hidden">
         <Image
           src={imageUrl}
@@ -31,7 +36,18 @@ const Product = ({
         />
       </div>
       <div className="flex flex-col gap-2 p-2">
-        <Link href={`/products/${id}`}>{name}</Link>
+        <Link
+          href={`/products/${id}`}
+          className="font-medium hover:text-primary transition"
+        >
+          {name}
+        </Link>
+        <div className="flex flex-col gap-y-2 items-end">
+          <p className="text-left">{formatPrice(price)}</p>
+          <p className="flex items-center gap-x-1">
+            {ratings} <Star className="h-4 w-4 text-primary" />
+          </p>
+        </div>
         <div className="flex flex-col gap-2">
           <Button>Add to Cart</Button>
           <Button variant="outline" asChild>

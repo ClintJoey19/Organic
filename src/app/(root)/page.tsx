@@ -1,5 +1,6 @@
 import Categories from "@/components/home/Categories";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
+import FeaturedRatings from "@/components/home/FeaturedRatings";
 import FeaturedStores from "@/components/home/FeaturedStores";
 import Hero from "@/components/home/Hero";
 
@@ -9,7 +10,8 @@ export default function Home() {
       <Hero />
       <Categories />
       <FeaturedProducts />
-      <FeaturedStores />
+      {/* <FeaturedStores /> */}
+      <FeaturedRatings />
     </div>
   );
 }
