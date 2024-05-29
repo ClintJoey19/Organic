@@ -49,8 +49,8 @@ const Product = ({
           </p>
         </div>
         <div className="flex flex-col gap-2">
-          <Button>Add to Cart</Button>
-          <Button variant="outline" asChild>
+          <Button variant="outline">Add to Cart</Button>
+          <Button asChild>
             <Link href={`/checkout?productId='${id}'`}>Buy</Link>
           </Button>
         </div>

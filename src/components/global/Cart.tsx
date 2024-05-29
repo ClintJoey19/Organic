@@ -23,8 +23,8 @@ const Cart = () => {
           <SheetTitle>Shopping Cart</SheetTitle>
         </SheetHeader>
         <div className="flex flex-col justify-between gap-y-2 mt-2">
-          <div className="flex flex-col gap-y-2">
-            <CartItem />
+          <div className="flex flex-col gap-y-2 h-[570px] overflow-y-auto">
+            <CartItem id="123" productId="123" quantity={1} price={40} />
           </div>
           <div className="flex flex-col gap-y-2">
             <div className="flex justify-between items-center">

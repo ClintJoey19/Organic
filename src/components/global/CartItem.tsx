@@ -1,12 +1,17 @@
-import React from "react";
 import { Checkbox } from "../ui/checkbox";
 import Image from "next/image";
-import { Button } from "../ui/button";
 import { Trash } from "lucide-react";
 import QuantityTracker from "./QuantityTracker";
 import { formatPrice } from "@/lib/utils";
 
-const CartItem = () => {
+interface CartItemProps {
+  id: string;
+  productId: string;
+  quantity: number;
+  price: number;
+}
+
+const CartItem = ({ id, productId, quantity, price }: CartItemProps) => {
   return (
     <div className="flex flex-col justify-between border border-slate-200 p-2 rounded-md hover:shadow-md transition cursor-pointer relative">
       <div className="flex gap-x-2 items-center">
@@ -16,7 +21,7 @@ const CartItem = () => {
       </div>
       <div className="flex justify-end gap-x-2">
         <span>{formatPrice(40)}</span>
-        <QuantityTracker />
+        <QuantityTracker size="sm" />
       </div>
       <Trash className="h-6 w-6 bg-destructive text-white rounded-md p-1 absolute top-1 right-1" />
     </div>
