@@ -16,7 +16,7 @@ const Navbar = () => {
         </div>
       </div>
       <nav className="max-md:hidden">
-        <Navlinks />
+        <Navlinks direction="horizontal" />
       </nav>
       <div>
         <UserAuth />
