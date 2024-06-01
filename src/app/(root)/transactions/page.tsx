@@ -1,15 +1,24 @@
 import Tab from "@/components/global/Tab";
-import React from "react";
+import CompletedOrders from "@/components/transactions/completed/CompletedOrders";
+import Orders from "@/components/transactions/orders/Orders";
 
-const page = () => {
+interface SearchParams {
+  searchParams: {
+    page: string;
+  };
+}
+
+const page = ({ searchParams }: SearchParams) => {
+  const currentPage = searchParams.page || "orders";
+
   return (
     <section className="container pt-4">
       <h2 className="page-title mb-4">Transactions</h2>
       <div className="flex justify-end gap-x-2 mb-4">
-        <Tab name="Orders" page="orders" />
-        <Tab name="Completed" page="completed" />
+        <Tab name="Orders" page="orders" currentPage={currentPage} />
+        <Tab name="Completed" page="completed" currentPage={currentPage} />
       </div>
-      <div>Render the page here</div>
+      <div>{currentPage === "orders" ? <Orders /> : <CompletedOrders />}</div>
     </section>
   );
 };
