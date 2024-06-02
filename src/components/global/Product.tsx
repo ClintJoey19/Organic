@@ -51,7 +51,7 @@ const Product = ({
         <div className="flex flex-col gap-2">
           <Button variant="outline">Add to Cart</Button>
           <Button asChild>
-            <Link href={`/checkout?productId='${id}'`}>Buy</Link>
+            <Link href={`/checkout?productId=${id}&quantity=1`}>Buy</Link>
           </Button>
         </div>
       </div>

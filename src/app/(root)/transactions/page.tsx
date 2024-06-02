@@ -12,7 +12,7 @@ const page = ({ searchParams }: SearchParams) => {
   const currentPage = searchParams.page || "orders";
 
   return (
-    <section className="container pt-4">
+    <section className="container min-h-[88vh] pt-4">
       <h2 className="page-title mb-4">Transactions</h2>
       <div className="flex justify-end gap-x-2 mb-4">
         <Tab name="Orders" page="orders" currentPage={currentPage} />
