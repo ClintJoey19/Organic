@@ -1,16 +1,16 @@
 import Categories from "@/components/home/Categories";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
 import FeaturedRatings from "@/components/home/FeaturedRatings";
-import FeaturedStores from "@/components/home/FeaturedStores";
 import Hero from "@/components/home/Hero";
+import { connectToDB } from "@/lib/mongoose";
 
-export default function Home() {
+export default async function Home() {
+  await connectToDB();
   return (
     <div>
       <Hero />
       <Categories />
       <FeaturedProducts />
-      {/* <FeaturedStores /> */}
       <FeaturedRatings />
     </div>
   );
