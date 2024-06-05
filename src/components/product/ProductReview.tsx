@@ -20,6 +20,7 @@ const ProductReview = () => {
           <div className="flex gap-x-2 items-center">
             {Array.from([1, 2, 3, 4, 5]).map((star) => (
               <Star
+                key={star}
                 className={`h-4 w-4 ${
                   star <= starred ? "text-primary" : "text-slate-700"
                 }`}
