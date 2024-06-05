@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -13,21 +14,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useUser } from "@clerk/nextjs";
+import toast from "react-hot-toast";
+import { IUser, addUser } from "@/lib/actions/onboarding";
+import { LoaderCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
-  firstname: z
-    .string()
-    .min(1, { message: "First Name field required" })
-    .or(z.null()),
-  lastname: z
-    .string()
-    .min(1, { message: "Last Name field required" })
-    .or(z.null()),
-  username: z.string().or(z.null()),
-  email: z.string().min(1, { message: "Email field required" }).or(z.null()),
-  password: z.string(),
-  profileImg: z.string().or(z.null()),
-  role: z.string(),
   baranggay: z.string().min(1, { message: "Baranggay field required" }),
   municipality: z.string().min(1, { message: "Municipality field required" }),
   province: z.string().min(1, { message: "Province field required" }),
@@ -37,18 +29,46 @@ const formSchema = z.object({
 
 const UserForm = () => {
   const { user } = useUser();
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      role: "user",
+      baranggay: "",
+      municipality: "",
+      province: "",
+      zipcode: "",
+      phoneNumber: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      setIsSubmitting(true);
+      const newUser: IUser = {
+        firstname: user?.firstName ?? "",
+        lastname: user?.lastName ?? "",
+        username: user?.username ?? "",
+        email: user?.primaryEmailAddress?.emailAddress ?? "",
+        profileImg: user?.imageUrl ?? "",
+        role: "user",
+        baranggay: values.baranggay,
+        municipality: values.municipality,
+        province: values.province,
+        zipcode: Number(values.zipcode),
+        phoneNumber: values.phoneNumber,
+      };
+
+      const res = await addUser(newUser);
+      toast.success("User added");
+      router.push("/");
+    } catch (error: any) {
+      console.error(error.message);
+      toast.error(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -122,7 +142,12 @@ const UserForm = () => {
           )}
         />
         <div className="flex justify-end">
-          <Button type="submit">Submit</Button>
+          <Button type="submit">
+            {isSubmitting && (
+              <LoaderCircle className="h-4 w-4 animate-spin mr-2" />
+            )}{" "}
+            Submit
+          </Button>
         </div>
       </form>
     </Form>

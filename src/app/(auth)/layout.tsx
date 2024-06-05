@@ -1,6 +1,7 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
 import "../globals.css";
+import ToastProvider from "@/components/providers/ToastProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({
           <section className="h-screen flex justify-center items-center">
             {children}
           </section>
+          <ToastProvider />
         </body>
       </html>
     </ClerkProvider>

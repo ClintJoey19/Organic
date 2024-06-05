@@ -20,12 +20,12 @@ export const navlinks = [
 export const categories = [
   {
     label: "Vegetables",
-    href: "/products?category='vegetables'",
+    href: "/products?category=vegetables",
     imageUrl: "/vegetables.jpg",
   },
   {
     label: "Fruits",
-    href: "/products?category='fruits'",
+    href: "/products?category=fruits",
     imageUrl: "/fruits.jpg",
   },
 ];

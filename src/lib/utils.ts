@@ -5,6 +5,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const parseJSON = (json: any) => {
+  return JSON.parse(JSON.stringify(json));
+};
+
 export const formatPrice = (price: number | null) => {
   return (
     price &&
