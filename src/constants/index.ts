@@ -1,3 +1,5 @@
+import { Apple, ClipboardList, LayoutDashboard, Users } from "lucide-react";
+
 export const navlinks = [
   {
     label: "Home",
@@ -14,6 +16,29 @@ export const navlinks = [
   {
     label: "Contact",
     href: "/contact",
+  },
+];
+
+export const adminLinks = [
+  {
+    label: "Dashboard",
+    iconLabel: LayoutDashboard,
+    href: "/admin",
+  },
+  {
+    label: "Users",
+    iconLabel: Users,
+    href: "/admin/users",
+  },
+  {
+    label: "Products",
+    iconLabel: Apple,
+    href: "/admin/products",
+  },
+  {
+    label: "Transactions",
+    iconLabel: ClipboardList,
+    href: "/admin/transactions",
   },
 ];
 

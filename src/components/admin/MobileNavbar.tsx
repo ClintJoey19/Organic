@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { navlinks } from "@/constants";
+import { adminLinks } from "@/constants";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -23,7 +23,7 @@ const MobileNavbar = () => {
         </SheetTrigger>
         <SheetContent side="left">
           <div className="mt-10 flex flex-col gap-y-2">
-            {navlinks.map(({ label, href }) => {
+            {adminLinks.map(({ label, href }) => {
               const isActive =
                 (pathname.includes(href) && href.length > 1) ||
                 pathname === href;

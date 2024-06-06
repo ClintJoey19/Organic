@@ -1,6 +1,5 @@
 import { Star } from "lucide-react";
 import Image from "next/image";
-import React from "react";
 
 const ProductReview = () => {
   const starred = 5;
