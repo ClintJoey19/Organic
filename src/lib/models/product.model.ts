@@ -27,6 +27,10 @@ const productSchema = new mongoose.Schema(
     productImg: {
       type: String,
     },
+    isPublished: {
+      type: Boolean,
+      required: true,
+    },
   },
   { timestamps: true }
 );
