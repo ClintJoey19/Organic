@@ -13,6 +13,7 @@ const Navlinks = () => {
           pathname === link.href;
         return (
           <Link
+            key={link.label}
             href={link.href}
             className={`w-full flex justify-start py-2 px-4 ${
               isActive && "bg-primary/25 text-primary"
