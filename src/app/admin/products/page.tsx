@@ -1,8 +1,11 @@
 import AddProduct from "@/components/admin/products/AddProduct";
 import { ProductsTable } from "@/components/admin/products/ProductsTable";
+import { getProducts } from "@/lib/actions/product.action";
 import React from "react";
 
-const page = () => {
+const page = async () => {
+  const products = await getProducts();
+
   return (
     <section className="w-full p-4 flex flex-col">
       <div className="flex justify-between items-center">
@@ -10,7 +13,7 @@ const page = () => {
         <AddProduct />
       </div>
       <div className="w-full">
-        <ProductsTable />
+        {products && <ProductsTable rows={products} />}
       </div>
     </section>
   );

@@ -25,7 +25,7 @@ const MobileNavbar = () => {
           <div className="mt-10 flex flex-col gap-y-2">
             {adminLinks.map(({ label, href }) => {
               const isActive =
-                (pathname.includes(href) && href.length > 1) ||
+                (pathname.includes(href) && href.length > 6) ||
                 pathname === href;
               return (
                 <SheetClose key={label} asChild>
