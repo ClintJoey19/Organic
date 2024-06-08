@@ -1,5 +1,6 @@
 import SectionHeader from "@/components/admin/SectionHeader";
 import ProductActions from "@/components/admin/products/forms/ProductActions";
+import ProductCategoryForm from "@/components/admin/products/forms/ProductCategoryForm";
 import ProductDescriptionForm from "@/components/admin/products/forms/ProductDescriptionForm";
 import ProductImageForm from "@/components/admin/products/forms/ProductImageForm";
 import ProductPriceForm from "@/components/admin/products/forms/ProductPriceForm";
@@ -7,7 +8,8 @@ import ProductStocksForm from "@/components/admin/products/forms/ProductStocksFo
 import ProductTitleForm from "@/components/admin/products/forms/ProductTitleForm";
 import { Button } from "@/components/ui/button";
 import { getProduct } from "@/lib/actions/product.action";
-import { DollarSign, Image, Sprout } from "lucide-react";
+import { ArrowLeft, DollarSign, Image, Sprout } from "lucide-react";
+import Link from "next/link";
 
 interface ProductProps {
   params: {
@@ -21,6 +23,7 @@ const page = async ({ params }: ProductProps) => {
   const requiredFields = [
     product.name,
     product.description,
+    product.category,
     product.price,
     product.stocks,
     product.productImg,
@@ -33,6 +36,12 @@ const page = async ({ params }: ProductProps) => {
 
   return (
     <section className="w-full p-4">
+      <Button variant="outline" asChild>
+        <Link href={"/admin/products"} className="flex items-center gap-2 mb-2">
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </Link>
+      </Button>
       <div className="w-full mb-6">
         <div className="w-full flex justify-between items-center">
           <h2 className="page-title">{product.name}</h2>
@@ -57,6 +66,10 @@ const page = async ({ params }: ProductProps) => {
             <ProductDescriptionForm
               id={params.productId}
               description={product.description}
+            />
+            <ProductCategoryForm
+              id={params.productId}
+              category={product.category}
             />
             <SectionHeader
               label="Stocks and Pricing"

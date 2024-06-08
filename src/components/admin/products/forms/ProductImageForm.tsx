@@ -1,8 +1,6 @@
 "use client";
 import { useState } from "react";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { Camera, Pencil, X } from "lucide-react";
 import toast from "react-hot-toast";
 import { editProduct } from "@/lib/actions/product.action";
@@ -63,11 +61,7 @@ const ProductImageForm = ({ id, productImg }: ProductImageFormProps) => {
             </div>
           ) : (
             <div className="relative aspect-video rounded-md overflow-hidden">
-              <Image
-                src={`https://utfs.io/f/5c9ac917-d8d3-4bac-baea-bc797d1c5860-1jdxsq.webp`}
-                alt="product-img"
-                fill
-              />
+              <Image src={productImg} alt="product-img" fill />
             </div>
           ))}
         {isEditing && (

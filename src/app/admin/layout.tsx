@@ -23,7 +23,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={inter.className}>
           <Navbar />
-          <main className="mt-[8vh] m-auto flex">
+          <main className="mt-[8vh] m-auto md:pl-[300px] flex">
             <Sidebar />
             {children}
           </main>
