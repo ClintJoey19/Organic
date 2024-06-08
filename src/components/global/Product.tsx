@@ -9,26 +9,24 @@ interface ProductProps {
   name: string;
   category: string;
   price: number;
-  quantity: number;
-  quality: string;
-  imageUrl: string;
-  ratings: number;
+  stocks: number;
+  productImg: string;
+  ratings?: number;
 }
 
 const Product = ({
   id,
   name,
   price,
-  quantity,
-  quality,
-  imageUrl,
+  stocks,
+  productImg,
   ratings,
 }: ProductProps) => {
   return (
     <div className="w-full rounded-xl hover:shadow-md transition flex flex-col overflow-hidden border border-slate-200 relative">
       <div className="w-full h-[200px] relative overflow-hidden">
         <Image
-          src={imageUrl}
+          src={productImg}
           alt={name}
           fill
           objectFit="cover"
@@ -45,7 +43,7 @@ const Product = ({
         <div className="flex flex-col gap-y-2 items-end">
           <p className="text-left">{formatPrice(price)}</p>
           <p className="flex items-center gap-x-1">
-            {ratings} <Star className="h-4 w-4 text-primary" />
+            {ratings || 0} <Star className="h-4 w-4 text-primary" />
           </p>
         </div>
         <div className="flex flex-col gap-2">

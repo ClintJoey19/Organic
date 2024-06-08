@@ -3,10 +3,12 @@ import ProductReview from "@/components/product/ProductReview";
 import StarReview from "@/components/product/StarReview";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { getProduct } from "@/lib/actions/product.action";
 import { formatPrice } from "@/lib/utils";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import { ProductClient } from "../page";
 
 interface ProductPageProps {
   params: {
@@ -14,25 +16,27 @@ interface ProductPageProps {
   };
 }
 
-const page = ({ params }: ProductPageProps) => {
+const page = async ({ params }: ProductPageProps) => {
+  const product: ProductClient = await getProduct(params.productId);
   return (
     <section className="container">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div className="h-[500px] max-sm:h-[300px] relative p-4 border border-slate-200 rounded-lg">
-          <Image src={`/apple.webp`} alt="apple" fill objectFit="cover" />
+          <Image src={product.productImg} alt="apple" fill objectFit="cover" />
         </div>
         <div className="p-4">
-          <h2 className="text-2xl font-medium">Apple</h2>
-          <p className="mb-4">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae alias
-            quo consectetur cupiditate, nihil in.
+          <h2 className="text-2xl font-medium mb-4">{product.name}</h2>
+          <p className="mb-4 text-slate-500 text-sm text-justify">
+            {product.description}
           </p>
-          <span className="text-4xl font-medium">{formatPrice(40)}</span>
+          <span className="text-4xl font-medium">
+            {formatPrice(product.price)}
+          </span>
           <div className="flex justify-between items-center">
             <p className="flex items-center gap-x-1 text-sm">
-              5 <Star className="h-4 w-4 text-primary" />
+              {product.ratings || 0} <Star className="h-4 w-4 text-primary" />
             </p>
-            <p className="text-slate-700 text-sm">2.1k sold</p>
+            <p className="text-slate-700 text-sm">{product.sold || 0} sold</p>
           </div>
           <div className="flex justify-end mt-4">
             <QuantityTracker size="md" />

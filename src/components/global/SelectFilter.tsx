@@ -1,3 +1,4 @@
+"use client";
 import {
   Select,
   SelectContent,
@@ -5,20 +6,41 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback } from "react";
 
 interface SelectFilterProps {
-  name: string;
+  label: string;
   items: {
     label: string;
     value: string;
   }[];
+  filter?: string;
 }
 
-const SelectFilter = ({ name, items }: SelectFilterProps) => {
+const SelectFilter = ({ label, items, filter }: SelectFilterProps) => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
+
+  const filterProducts = (value: string) => {
+    const query = createQueryString(label, value);
+    router.push(`/products?${query}`);
+  };
+
   return (
-    <Select>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder={name} />
+    <Select value={filter} onValueChange={(value) => filterProducts(value)}>
+      <SelectTrigger className="w-[180px] capitalize">
+        <SelectValue placeholder={label} />
       </SelectTrigger>
       <SelectContent>
         {items.map(({ label, value }) => (

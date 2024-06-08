@@ -4,11 +4,42 @@ import { Product } from "../models/product.model";
 import { connectToDB } from "../mongoose";
 import { parseJSON } from "../utils";
 
-export const getProducts = async () => {
+interface Filters {
+  isPublished?: boolean;
+  category?: string;
+  name?: string;
+  price?: string;
+}
+
+export const getProducts = async ({
+  isPublished,
+  category,
+  name,
+  price,
+}: Filters) => {
   try {
     await connectToDB();
 
-    const res = await Product.find();
+    let filterQuery = {};
+
+    if (isPublished !== null && isPublished !== undefined)
+      filterQuery = { ...filterQuery, isPublished: isPublished };
+
+    if (category && category !== "all")
+      filterQuery = { ...filterQuery, category };
+
+    if (name) {
+      const sortDirection = name === "asc" ? 1 : -1;
+
+      filterQuery = { ...filterQuery, sort: { name: sortDirection } };
+    }
+
+    if (price) {
+      const sortDirection = price === "asc" ? 1 : -1;
+      filterQuery = { ...filterQuery, sort: { price: sortDirection } };
+    }
+
+    const res = await Product.find(filterQuery);
 
     if (!res) throw new Error("There was an error fetching the products");
 

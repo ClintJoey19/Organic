@@ -73,7 +73,7 @@ const ProductDescriptionForm = ({
           )}
         </div>
         {!isEditing ? (
-          <div className="text-end">
+          <div className="text-justify">
             <p className={`text-slate-500 text-sm ${!description && "italic"}`}>
               {description ? description : "No product description."}
             </p>
