@@ -7,8 +7,8 @@ import { getProduct } from "@/lib/actions/product.action";
 import { formatPrice } from "@/lib/utils";
 import { Star } from "lucide-react";
 import Image from "next/image";
-import React from "react";
 import { ProductClient } from "../page";
+import ProductPurchaseControlForm from "@/components/product/forms/ProductPurchaseControlForm";
 
 interface ProductPageProps {
   params: {
@@ -18,6 +18,7 @@ interface ProductPageProps {
 
 const page = async ({ params }: ProductPageProps) => {
   const product: ProductClient = await getProduct(params.productId);
+
   return (
     <section className="container">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -38,13 +39,13 @@ const page = async ({ params }: ProductPageProps) => {
             </p>
             <p className="text-slate-700 text-sm">{product.sold || 0} sold</p>
           </div>
-          <div className="flex justify-end mt-4">
-            <QuantityTracker size="md" />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
-            <Button variant="outline">Add to Cart</Button>
-            <Button>Buy</Button>
-          </div>
+          <p className="text-sm">
+            In Stocks: <span>{product.stocks} kg</span>
+          </p>
+          <ProductPurchaseControlForm
+            productId={params.productId}
+            stocks={product.stocks}
+          />
         </div>
       </div>
       <div>

@@ -1,8 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { getProduct } from "@/lib/actions/product.action";
 import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
-import React from "react";
+import { ProductClient } from "../products/page";
+import { CreditCard, HandCoins } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { currentUser } from "@clerk/nextjs/server";
 
 interface SearchParams {
   searchParams: {
@@ -11,8 +16,23 @@ interface SearchParams {
   };
 }
 
-const page = ({ searchParams }: SearchParams) => {
+const page = async ({ searchParams }: SearchParams) => {
   const { productId, quantity } = searchParams;
+  const product: ProductClient = await getProduct(productId);
+  // const user = await currentUser(); pending
+
+  const shippingFee = 50;
+  const orderTotal = product.price * quantity;
+  const totalAmount = orderTotal + shippingFee;
+
+  let paymentMethod = "cod";
+
+  const onSubmit = async () => {
+    try {
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  };
 
   return (
     <section className="container min-h-[86vh] pt-4">
@@ -30,49 +50,17 @@ const page = ({ searchParams }: SearchParams) => {
             <h3 className="font-semibold">Product</h3>
             <div className="border border-slate-300 p-2 rounded-sm flex justify-between items-center gap-2">
               <Image
-                src={`/apple.webp`}
-                alt="apple"
+                src={product.productImg}
+                alt={product.name}
                 height={60}
                 width={60}
                 objectFit="cover"
               />
               <div className="flex flex-col">
-                <p className="text-sm mb-2">Apple</p>
+                <p className="text-sm mb-2">{product.name}</p>
                 <div className="flex max-md:flex-col justify-end gap-2">
-                  <span className="text-sm">{formatPrice(40)}</span>
-                  <span className="text-sm">1 kg</span>
-                </div>
-              </div>
-            </div>
-            <div className="border border-slate-300 p-2 rounded-sm flex justify-between items-center gap-2">
-              <Image
-                src={`/apple.webp`}
-                alt="apple"
-                height={60}
-                width={60}
-                objectFit="cover"
-              />
-              <div className="flex flex-col">
-                <p className="text-sm mb-2">Apple</p>
-                <div className="flex max-md:flex-col justify-end gap-2">
-                  <span className="text-sm">{formatPrice(40)}</span>
-                  <span className="text-sm">1 kg</span>
-                </div>
-              </div>
-            </div>
-            <div className="border border-slate-300 p-2 rounded-sm flex justify-between items-center gap-2">
-              <Image
-                src={`/apple.webp`}
-                alt="apple"
-                height={60}
-                width={60}
-                objectFit="cover"
-              />
-              <div className="flex flex-col">
-                <p className="text-sm mb-2">Apple</p>
-                <div className="flex max-md:flex-col justify-end gap-2">
-                  <span className="text-sm">{formatPrice(40)}</span>
-                  <span className="text-sm">1 kg</span>
+                  <span className="text-sm">{formatPrice(product.price)}</span>
+                  <span className="text-sm">{quantity} kg</span>
                 </div>
               </div>
             </div>
@@ -85,26 +73,51 @@ const page = ({ searchParams }: SearchParams) => {
                 <Image src={"/logo.svg"} alt="logo" height={30} width={30} />
                 <p className="text-lg font-medium italic">Organic Express</p>
               </div>
-              <span className="text-sm">{formatPrice(50)}</span>
+              <span className="text-sm">{formatPrice(shippingFee)}</span>
             </div>
           </div>
         </div>
-        <div className="">
+        <div className="flex flex-col gap-4">
+          <div className="border border-slate-300 p-4 rounded-md">
+            <h3 className="font-semibold">Payment Method</h3>
+            <Separator className="my-4" />
+            <RadioGroup defaultValue={paymentMethod}>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="cod" id="cod" />
+                <Label
+                  htmlFor="cod"
+                  className="flex items-center gap-x-2 text-md"
+                >
+                  <HandCoins className="text-primary h-5 w-5" /> Cash on
+                  Delivery
+                </Label>
+              </div>
+              {/* <div className="flex items-center space-x-2">
+                <RadioGroupItem value="card" id="card" />
+                <Label
+                  htmlFor="card"
+                  className="flex items-center gap-x-2 text-md"
+                >
+                  <CreditCard className="h-5 w-5 text-primary" /> Credit Card
+                </Label>
+              </div> */}
+            </RadioGroup>
+          </div>
           <div className="border border-slate-300 p-4 rounded-md">
             <h3 className="font-semibold">Order Summary</h3>
             <Separator className="my-4" />
             <div className="flex flex-col gap-2">
               <div className="flex justify-between items-center">
                 <p className="font-medium text-sm">Order Total</p>
-                <span className="text-sm">{formatPrice(40)}</span>
+                <span className="text-sm">{formatPrice(orderTotal)}</span>
               </div>
               <div className="flex justify-between items-center">
                 <p className="font-medium text-sm">Shipping Fee</p>
-                <span className="text-sm">{formatPrice(50)}</span>
+                <span className="text-sm">{formatPrice(shippingFee)}</span>
               </div>
               <div className="flex justify-between items-center">
                 <p className="font-medium text-sm">Total Amount</p>
-                <span className="text-sm">{formatPrice(90)}</span>
+                <span className="text-sm">{formatPrice(totalAmount)}</span>
               </div>
             </div>
             <Separator className="my-4" />

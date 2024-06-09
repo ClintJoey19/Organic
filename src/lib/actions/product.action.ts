@@ -2,7 +2,7 @@
 import { revalidatePath } from "next/cache";
 import { Product } from "../models/product.model";
 import { connectToDB } from "../mongoose";
-import { parseJSON } from "../utils";
+import { parseJSON, setSortQuery } from "../utils";
 
 interface Filters {
   isPublished?: boolean;
@@ -21,6 +21,7 @@ export const getProducts = async ({
     await connectToDB();
 
     let filterQuery = {};
+    let sortQuery = {};
 
     if (isPublished !== null && isPublished !== undefined)
       filterQuery = { ...filterQuery, isPublished: isPublished };
@@ -29,17 +30,19 @@ export const getProducts = async ({
       filterQuery = { ...filterQuery, category };
 
     if (name) {
-      const sortDirection = name === "asc" ? 1 : -1;
-
-      filterQuery = { ...filterQuery, sort: { name: sortDirection } };
+      sortQuery = setSortQuery(sortQuery, "name", name);
     }
 
     if (price) {
-      const sortDirection = price === "asc" ? 1 : -1;
-      filterQuery = { ...filterQuery, sort: { price: sortDirection } };
+      sortQuery = setSortQuery(sortQuery, "price", price);
     }
 
-    const res = await Product.find(filterQuery);
+    console.log(sortQuery);
+
+    const res = await Product.find(filterQuery)
+      .sort(sortQuery)
+      .limit(10)
+      .skip(0);
 
     if (!res) throw new Error("There was an error fetching the products");
 
@@ -100,5 +103,15 @@ export const editProduct = async (id: string, key: string, value: any) => {
   } catch (error: any) {
     console.error(error.message);
     throw new Error("Failed to edit the product");
+  }
+};
+
+export const deleteProduct = async (id: string) => {
+  try {
+    await connectToDB();
+
+    await Product.findByIdAndDelete(id);
+  } catch (error: any) {
+    console.error(error.message);
   }
 };
