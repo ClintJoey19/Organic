@@ -19,7 +19,6 @@ interface SearchParams {
 const page = async ({ searchParams }: SearchParams) => {
   const { productId, quantity } = searchParams;
   const product: ProductClient = await getProduct(productId);
-  // const user = await currentUser(); pending
 
   const shippingFee = 50;
   const orderTotal = product.price * quantity;

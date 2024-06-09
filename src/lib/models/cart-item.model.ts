@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const orderSchema = new mongoose.Schema(
+const cartItemSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -14,28 +14,15 @@ const orderSchema = new mongoose.Schema(
     },
     quantity: {
       type: Number,
-      min: 1,
       required: true,
     },
-    status: {
-      type: String,
-      required: true,
-    },
-    total: {
-      type: Number,
-      required: true,
-    },
-    payment: {
-      type: String,
-      required: true,
-    },
-    address: {
-      type: String,
+    isChecked: {
+      type: Boolean,
       required: true,
     },
   },
   { timestamps: true }
 );
 
-export const Order =
-  mongoose.models?.Order || mongoose.model("Order", orderSchema);
+export const CartItem =
+  mongoose.models?.CartItem || mongoose.model("CartItem", cartItemSchema);

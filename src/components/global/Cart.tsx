@@ -1,7 +1,5 @@
-"use client";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -12,8 +10,19 @@ import CartItem from "./CartItem";
 import { Button } from "../ui/button";
 import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
+import { getCartItems } from "@/lib/actions/cart-item.action";
 
-const Cart = () => {
+interface CartItem {
+  _id: string;
+  userId: string;
+  productId: string;
+  quantity: number;
+  isChecked: boolean;
+}
+
+const Cart = async () => {
+  const cartItems = await getCartItems();
+
   return (
     <Sheet>
       <SheetTrigger>
@@ -31,7 +40,14 @@ const Cart = () => {
             View Transactions
           </Link>
           <div className="flex flex-col gap-y-2 h-[540px] overflow-y-auto">
-            <CartItem id="123" productId="123" quantity={1} price={40} />
+            {cartItems.map((item: CartItem) => (
+              <CartItem
+                key={item._id}
+                id={item._id}
+                productId={item.productId}
+                quantity={item.quantity}
+              />
+            ))}
           </div>
           <div className="flex flex-col gap-y-2">
             <div className="flex justify-between items-center">

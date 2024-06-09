@@ -2,6 +2,7 @@ import Image from "next/image";
 import UserAuth from "./UserAuth";
 import Navlinks from "./Navlinks";
 import MobileNavbar from "./MobileNavbar";
+import Cart from "./Cart";
 
 const Navbar = () => {
   return (
@@ -18,7 +19,8 @@ const Navbar = () => {
       <nav className="max-md:hidden">
         <Navlinks direction="horizontal" />
       </nav>
-      <div>
+      <div className="flex items-center gap-x-4">
+        <Cart />
         <UserAuth />
       </div>
     </section>

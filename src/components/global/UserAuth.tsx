@@ -3,14 +3,12 @@ import { UserButton, useAuth } from "@clerk/nextjs";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { LogIn } from "lucide-react";
-import Cart from "./Cart";
 
 const UserAuth = () => {
   const user = useAuth();
 
   return (
-    <div className="flex items-center gap-x-3">
-      <Cart />
+    <div className="flex items-center">
       {!user.isSignedIn ? (
         <Button size="sm">
           <Link href="/sign-in">Sign In</Link>

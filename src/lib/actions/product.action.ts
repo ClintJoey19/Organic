@@ -73,7 +73,7 @@ export const addProduct = async (name: string) => {
     await connectToDB();
 
     const product = new Product({
-      name: name,
+      name,
       isPublished: false,
     });
 
@@ -91,7 +91,6 @@ export const addProduct = async (name: string) => {
 export const editProduct = async (id: string, key: string, value: any) => {
   try {
     await connectToDB();
-    console.log(key, value);
 
     const product = await Product.findByIdAndUpdate(id, {
       [key]: value,

@@ -1,20 +1,32 @@
 "use client";
-import { useState } from "react";
 import { Operator } from "../product/forms/ProductPurchaseControlForm";
 import QuantityTracker from "../global/QuantityTracker";
+import { updateCartItem } from "@/lib/actions/cart-item.action";
+import { usePathname } from "next/navigation";
 
-const CartItemPurchaseControl = () => {
-  const [quantity, setQuantity] = useState<number>(1);
+interface CartItemPurchaseControlProps {
+  id: string;
+  quantity: number;
+  stocks: number;
+}
 
-  const handleQuantity = (operation: Operator) => {
+const CartItemPurchaseControl = ({
+  id,
+  quantity,
+  stocks,
+}: CartItemPurchaseControlProps) => {
+  const pathname = usePathname();
+
+  const handleQuantity = async (operation: Operator) => {
     switch (operation) {
       case "add": {
-        setQuantity((prev) => prev + 1);
+        if (quantity >= stocks) return;
+        await updateCartItem(id, "quantity", quantity + 1, pathname);
         break;
       }
       case "minus": {
         if (quantity === 1) return;
-        setQuantity((prev) => prev - 1);
+        await updateCartItem(id, "quantity", quantity - 1, pathname);
         break;
       }
     }

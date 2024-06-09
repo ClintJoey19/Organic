@@ -1,8 +1,12 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { formatPrice } from "@/lib/utils";
 import { Star } from "lucide-react";
+import { createCartItem } from "@/lib/actions/cart-item.action";
+import toast from "react-hot-toast";
+import { usePathname } from "next/navigation";
 
 interface ProductProps {
   id: string;
@@ -22,6 +26,17 @@ const Product = ({
   productImg,
   ratings,
 }: ProductProps) => {
+  const pathname = usePathname();
+
+  const addToCart = async () => {
+    try {
+      await createCartItem("666025f1618f8955d4f8e44b", id, 1, pathname);
+
+      toast.success("Product added to cart");
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  };
   return (
     <div className="w-full rounded-xl hover:shadow-md transition flex flex-col overflow-hidden border border-slate-200 relative">
       <div className="w-full h-[200px] relative overflow-hidden">
@@ -47,7 +62,9 @@ const Product = ({
           </p>
         </div>
         <div className="flex flex-col gap-2">
-          <Button variant="outline">Add to Cart</Button>
+          <Button variant="outline" onClick={addToCart}>
+            Add to Cart
+          </Button>
           <Button asChild>
             <Link href={`/checkout?productId=${id}&quantity=1`}>Buy</Link>
           </Button>

@@ -1,9 +1,11 @@
 "use client";
 import QuantityTracker from "@/components/global/QuantityTracker";
 import { Button } from "@/components/ui/button";
-import { log } from "console";
+import { createCartItem } from "@/lib/actions/cart-item.action";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export type Operator = "add" | "minus";
 
@@ -17,6 +19,7 @@ const ProductPurchaseControlForm = ({
   stocks,
 }: ProductPurchaseControlFormProps) => {
   const [quantity, setQuantity] = useState(1);
+  const pathname = usePathname();
 
   const handleQuantity = (operation: Operator) => {
     switch (operation) {
@@ -35,7 +38,14 @@ const ProductPurchaseControlForm = ({
 
   const addToCart = async () => {
     try {
-      console.log("Added to cart");
+      await createCartItem(
+        "666025f1618f8955d4f8e44b",
+        productId,
+        quantity,
+        pathname
+      );
+
+      toast.success("Product added to cart");
     } catch (error: any) {
       console.error(error.message);
     }
