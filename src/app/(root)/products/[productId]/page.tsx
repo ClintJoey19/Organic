@@ -44,6 +44,7 @@ const page = async ({ params }: ProductPageProps) => {
           </p>
           <ProductPurchaseControlForm
             productId={params.productId}
+            price={product.price}
             stocks={product.stocks}
           />
         </div>

@@ -30,7 +30,7 @@ const Product = ({
 
   const addToCart = async () => {
     try {
-      await createCartItem("666025f1618f8955d4f8e44b", id, 1, pathname);
+      await createCartItem("666025f1618f8955d4f8e44b", id, price, 1, pathname);
 
       toast.success("Product added to cart");
     } catch (error: any) {

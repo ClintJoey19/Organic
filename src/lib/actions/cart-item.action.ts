@@ -4,11 +4,11 @@ import { CartItem } from "../models/cart-item.model";
 import { connectToDB } from "../mongoose";
 import { parseJSON } from "../utils";
 
-export const getCartItems = async () => {
+export const getCartItems = async (userId: string) => {
   try {
     await connectToDB();
 
-    const res = await CartItem.find().sort({ createdAt: -1 });
+    const res = await CartItem.find({ userId: userId }).sort({ createdAt: -1 });
 
     if (!res) throw new Error("There was an error fetching the cart items.");
 
@@ -35,20 +35,30 @@ export const getCartItem = async (id: string) => {
 export const createCartItem = async (
   userId: string,
   productId: string,
+  price: number,
   quantity: number,
   path: string
 ) => {
   try {
     await connectToDB();
 
-    const item = new CartItem({
+    const filter = {
       userId,
       productId,
-      quantity,
-      isChecked: false,
-    });
+    };
 
-    await item.save();
+    const item = await CartItem.findOneAndUpdate(
+      filter,
+      {
+        userId,
+        productId,
+        price,
+        $inc: { quantity: quantity },
+        isChecked: false,
+      },
+      { upsert: true, new: true }
+    );
+
     revalidatePath(path);
   } catch (error: any) {
     console.error(error.message);

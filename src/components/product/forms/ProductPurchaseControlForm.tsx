@@ -11,11 +11,13 @@ export type Operator = "add" | "minus";
 
 interface ProductPurchaseControlFormProps {
   productId: string;
+  price: number;
   stocks: number;
 }
 
 const ProductPurchaseControlForm = ({
   productId,
+  price,
   stocks,
 }: ProductPurchaseControlFormProps) => {
   const [quantity, setQuantity] = useState(1);
@@ -41,6 +43,7 @@ const ProductPurchaseControlForm = ({
       await createCartItem(
         "666025f1618f8955d4f8e44b",
         productId,
+        price,
         quantity,
         pathname
       );

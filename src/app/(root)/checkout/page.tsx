@@ -8,6 +8,7 @@ import { CreditCard, HandCoins } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { currentUser } from "@clerk/nextjs/server";
+import CheckoutItem from "@/components/checkout/CheckoutItem";
 
 interface SearchParams {
   searchParams: {
@@ -41,29 +42,16 @@ const page = async ({ searchParams }: SearchParams) => {
           <div className="w-full flex max-md:flex-col gap-2">
             <h3 className="font-semibold">Address</h3>
             <p className="w-full text-sm text-end">
-              Zone 6, Bulawan Jr. Lupi, Camarines Sur
+              4403, Zone 6, Bulawan Jr. Lupi, Camarines Sur
             </p>
           </div>
           <Separator className="my-2" />
-          <div className="w-full flex flex-col gap-4">
-            <h3 className="font-semibold">Product</h3>
-            <div className="border border-slate-300 p-2 rounded-sm flex justify-between items-center gap-2">
-              <Image
-                src={product.productImg}
-                alt={product.name}
-                height={60}
-                width={60}
-                objectFit="cover"
-              />
-              <div className="flex flex-col">
-                <p className="text-sm mb-2">{product.name}</p>
-                <div className="flex max-md:flex-col justify-end gap-2">
-                  <span className="text-sm">{formatPrice(product.price)}</span>
-                  <span className="text-sm">{quantity} kg</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <CheckoutItem
+            name={product.name}
+            price={product.price}
+            quantity={quantity}
+            productImg={product.productImg}
+          />
           <Separator className="my-4" />
           <div className="w-full flex flex-col gap-4">
             <h3 className="font-semibold">Shipping</h3>
