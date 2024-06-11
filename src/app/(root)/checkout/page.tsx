@@ -1,38 +1,44 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { getProduct } from "@/lib/actions/product.action";
 import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
-import { ProductClient } from "../products/page";
 import { CreditCard, HandCoins } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { currentUser } from "@clerk/nextjs/server";
 import CheckoutItem from "@/components/checkout/CheckoutItem";
+import { getCheckedItems } from "@/lib/actions/cart-item.action";
+import { createOrder } from "@/lib/actions/order.action";
+import toast from "react-hot-toast";
+import OrderCheckoutControl from "@/components/product/forms/OrderCheckoutControl";
 
 interface SearchParams {
   searchParams: {
     productId: string;
+    price: number;
     quantity: number;
+    cart: string;
   };
 }
 
 const page = async ({ searchParams }: SearchParams) => {
-  const { productId, quantity } = searchParams;
-  const product: ProductClient = await getProduct(productId);
+  const { productId, price, quantity, cart } = searchParams;
+  const cartItems = await getCheckedItems(cart);
+  const products =
+    productId && price && quantity
+      ? [{ productId, price, quantity }, ...cartItems]
+      : [...cartItems];
 
   const shippingFee = 50;
-  const orderTotal = product.price * quantity;
+  const orderTotal = products.reduce(
+    (accumulator, product) => accumulator + product.price * product.quantity,
+    0
+  );
+
   const totalAmount = orderTotal + shippingFee;
 
+  const address = "4403, Zone 6, Bulawan Jr. Lupi, Camarines Sur";
   let paymentMethod = "cod";
-
-  const onSubmit = async () => {
-    try {
-    } catch (error: any) {
-      console.error(error.message);
-    }
-  };
 
   return (
     <section className="container min-h-[86vh] pt-4">
@@ -46,12 +52,17 @@ const page = async ({ searchParams }: SearchParams) => {
             </p>
           </div>
           <Separator className="my-2" />
-          <CheckoutItem
-            name={product.name}
-            price={product.price}
-            quantity={quantity}
-            productImg={product.productImg}
-          />
+          <div className="w-full flex flex-col gap-4">
+            <h3 className="font-semibold">Products</h3>
+            {products.map((product) => (
+              <CheckoutItem
+                key={product.productId}
+                productId={product.productId}
+                quantity={product.quantity}
+              />
+            ))}
+          </div>
+
           <Separator className="my-4" />
           <div className="w-full flex flex-col gap-4">
             <h3 className="font-semibold">Shipping</h3>
@@ -108,10 +119,14 @@ const page = async ({ searchParams }: SearchParams) => {
               </div>
             </div>
             <Separator className="my-4" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-              <Button variant="outline">Cancel</Button>
-              <Button className="max-md:order-first">Checkout</Button>
-            </div>
+            <OrderCheckoutControl
+              userId="666025f1618f8955d4f8e44b"
+              products={products}
+              total={totalAmount}
+              payment={paymentMethod}
+              address={address}
+              isInCart={cart ? true : false}
+            />
           </div>
         </div>
       </div>

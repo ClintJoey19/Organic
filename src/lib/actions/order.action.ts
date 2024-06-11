@@ -2,6 +2,8 @@
 import { Order } from "../models/order.model";
 import { connectToDB } from "../mongoose";
 import { parseJSON } from "../utils";
+import { deleteAllCheckedItems, deleteCartItem } from "./cart-item.action";
+import { createOrderItem } from "./order-item.action";
 
 export const getOrders = async () => {
   try {
@@ -31,27 +33,39 @@ export const getOrder = async (id: string) => {
   }
 };
 
+interface IOrderItems {
+  productId: string;
+  quantity: number;
+}
+
 export const createOrder = async (
-  productId: string,
-  quantity: number,
+  userId: string,
+  products: IOrderItems[],
   total: number,
   payment: string,
-  address: string
+  address: string,
+  isInCart: boolean
 ) => {
   try {
     await connectToDB();
 
     const order = new Order({
-      userId: "", // pending
-      productId,
-      quantity,
+      userId: userId,
       status: "pending",
       total,
       payment,
       address,
     });
 
-    await order.save();
+    const { _id } = await order.save();
+
+    // saved the products as orderItems
+    for (const product of products) {
+      await createOrderItem(_id, product.productId, product.quantity);
+    }
+
+    // delete the cartItems if the products came from cart
+    if (isInCart) await deleteAllCheckedItems(userId);
   } catch (error: any) {
     console.error(error.message);
   }

@@ -78,9 +78,7 @@ const Cart = async () => {
               <span>{formatPrice(totalAmount)}</span>
             </div>
             <Button asChild>
-              <Link
-                href={`/checkout?cart=666025f1618f8955d4f8e44b&productId=66625a514e8c5571acbe030a&quantity=1`}
-              >
+              <Link href={`/checkout?cart=666025f1618f8955d4f8e44b`}>
                 Checkout
               </Link>
             </Button>

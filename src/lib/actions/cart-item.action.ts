@@ -8,9 +8,28 @@ export const getCartItems = async (userId: string) => {
   try {
     await connectToDB();
 
-    const res = await CartItem.find({ userId: userId }).sort({ createdAt: -1 });
+    const res = await CartItem.find({
+      userId: userId,
+    }).sort({ createdAt: -1 });
 
     if (!res) throw new Error("There was an error fetching the cart items.");
+
+    return parseJSON(res);
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
+export const getCheckedItems = async (userId: string) => {
+  try {
+    await connectToDB();
+
+    const res = await CartItem.find({
+      userId: userId,
+      isChecked: true,
+    });
+
+    if (!res) throw new Error("Cart items cannot be found");
 
     return parseJSON(res);
   } catch (error: any) {
@@ -56,7 +75,7 @@ export const createCartItem = async (
         $inc: { quantity: quantity },
         isChecked: false,
       },
-      { upsert: true, new: true }
+      { upsert: true }
     );
 
     revalidatePath(path);
@@ -87,6 +106,16 @@ export const deleteCartItem = async (id: string, path: string) => {
 
     await CartItem.findByIdAndDelete(id);
     revalidatePath(path);
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
+export const deleteAllCheckedItems = async (userId: string) => {
+  try {
+    await connectToDB();
+
+    await CartItem.deleteMany({ userId: userId, isChecked: true });
   } catch (error: any) {
     console.error(error.message);
   }

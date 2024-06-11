@@ -68,7 +68,9 @@ const ProductPurchaseControlForm = ({
           Add to Cart
         </Button>
         <Button asChild>
-          <Link href={`/checkout?productId=${productId}&quantity=${quantity}`}>
+          <Link
+            href={`/checkout?productId=${productId}&price=${price}&quantity=${quantity}`}
+          >
             Buy
           </Link>
         </Button>

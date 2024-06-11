@@ -66,7 +66,9 @@ const Product = ({
             Add to Cart
           </Button>
           <Button asChild>
-            <Link href={`/checkout?productId=${id}&quantity=1`}>Buy</Link>
+            <Link href={`/checkout?productId=${id}&price=${price}&quantity=1`}>
+              Buy
+            </Link>
           </Button>
         </div>
       </div>

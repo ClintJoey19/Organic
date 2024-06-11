@@ -105,6 +105,18 @@ export const editProduct = async (id: string, key: string, value: any) => {
   }
 };
 
+export const updateSoldCount = async (id: string, quantity: number) => {
+  try {
+    await connectToDB();
+
+    await Product.findByIdAndUpdate(id, {
+      $inc: { sold: quantity, stocks: -quantity },
+    });
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
 export const deleteProduct = async (id: string) => {
   try {
     await connectToDB();
