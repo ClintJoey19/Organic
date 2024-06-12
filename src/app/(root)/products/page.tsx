@@ -32,6 +32,7 @@ const page = async ({ searchParams }: SearchParams) => {
   const filterPrice = searchParams.price || "";
 
   const products: ProductClient[] = await getProducts({
+    page: currentPage || 1,
     isPublished: true,
     category: filterCategory,
     name: filterName,
@@ -66,7 +67,7 @@ const page = async ({ searchParams }: SearchParams) => {
           />
         ))}
       </div>
-      <PaginationPage currentPage={currentPage} />
+      <PaginationPage />
     </section>
   );
 };

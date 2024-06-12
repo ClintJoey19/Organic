@@ -1,3 +1,4 @@
+"use client";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,9 +10,18 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "../../ui/button";
+import { Button } from "@/components/ui/button";
+import { deleteOrder } from "@/lib/actions/order.action";
 
-const CancelOrder = () => {
+const CancelAction = ({ id }: { id: string }) => {
+  const onCancel = async () => {
+    try {
+      await deleteOrder(id);
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  };
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -21,19 +31,19 @@ const CancelOrder = () => {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+          <AlertDialogTitle>Cancel Order</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently cancel your
-            order.
+            order. Do you wish to proceed?
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={onCancel}>Continue</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );
 };
 
-export default CancelOrder;
+export default CancelAction;

@@ -5,6 +5,7 @@ import { connectToDB } from "../mongoose";
 import { parseJSON, setSortQuery } from "../utils";
 
 interface Filters {
+  page?: number;
   isPublished?: boolean;
   category?: string;
   name?: string;
@@ -12,6 +13,7 @@ interface Filters {
 }
 
 export const getProducts = async ({
+  page = 1,
   isPublished,
   category,
   name,
@@ -20,6 +22,8 @@ export const getProducts = async ({
   try {
     await connectToDB();
 
+    const limit = 10;
+    const skip = (page - 1) * limit;
     let filterQuery = {};
     let sortQuery = {};
 
@@ -37,12 +41,10 @@ export const getProducts = async ({
       sortQuery = setSortQuery(sortQuery, "price", price);
     }
 
-    console.log(sortQuery);
-
     const res = await Product.find(filterQuery)
       .sort(sortQuery)
-      .limit(10)
-      .skip(0);
+      .limit(limit)
+      .skip(skip);
 
     if (!res) throw new Error("There was an error fetching the products");
 

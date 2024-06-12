@@ -9,7 +9,7 @@ export default function Home() {
       <Hero />
       <Categories />
       <FeaturedProducts />
-      <FeaturedRatings />
+      {/* <FeaturedRatings /> */}
     </div>
   );
 }

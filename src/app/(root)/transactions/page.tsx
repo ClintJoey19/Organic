@@ -18,7 +18,10 @@ const page = ({ searchParams }: SearchParams) => {
         <Tab name="Orders" page="orders" currentPage={currentPage} />
         <Tab name="Completed" page="completed" currentPage={currentPage} />
       </div>
-      <div>{currentPage === "orders" ? <Orders /> : <CompletedOrders />}</div>
+      <div>
+        {currentPage === "orders" && <Orders />}
+        {currentPage === "completed" && <CompletedOrders />}
+      </div>
     </section>
   );
 };

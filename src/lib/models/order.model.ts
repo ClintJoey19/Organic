@@ -23,6 +23,20 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    arrival: {
+      month: {
+        type: Number,
+        required: true,
+      },
+      day: {
+        type: Number,
+        required: true,
+      },
+      year: {
+        type: Number,
+        required: true,
+      },
+    },
   },
   { timestamps: true }
 );

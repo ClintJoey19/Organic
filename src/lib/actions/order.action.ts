@@ -1,8 +1,9 @@
 "use server";
+import { revalidatePath } from "next/cache";
 import { Order } from "../models/order.model";
 import { connectToDB } from "../mongoose";
-import { parseJSON } from "../utils";
-import { deleteAllCheckedItems, deleteCartItem } from "./cart-item.action";
+import { calculateArrivalDate, parseJSON } from "../utils";
+import { deleteAllCheckedItems } from "./cart-item.action";
 import { createOrderItem } from "./order-item.action";
 
 export const getOrders = async () => {
@@ -10,6 +11,26 @@ export const getOrders = async () => {
     await connectToDB();
 
     const res = await Order.find();
+
+    if (!res) throw new Error("There was an error fetching the orders");
+
+    return parseJSON(res);
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
+export const getUserOrders = async (userId: string, isCompleted: boolean) => {
+  try {
+    await connectToDB();
+
+    const pendingStatus = ["pending", "shipping", "delivered"];
+    const completedStatus = ["received", "reviewed"];
+
+    const res = await Order.find({
+      userId: userId,
+      status: { $in: isCompleted ? completedStatus : pendingStatus },
+    }).sort({ createdAt: -1 });
 
     if (!res) throw new Error("There was an error fetching the orders");
 
@@ -55,6 +76,7 @@ export const createOrder = async (
       total,
       payment,
       address,
+      arrival: calculateArrivalDate(new Date()),
     });
 
     const { _id } = await order.save();
@@ -66,13 +88,25 @@ export const createOrder = async (
 
     // delete the cartItems if the products came from cart
     if (isInCart) await deleteAllCheckedItems(userId);
+    revalidatePath("/checkout/success");
   } catch (error: any) {
     console.error(error.message);
   }
 };
 
-export const updateOrder = async (id: string) => {
+export const updateOrder = async (
+  id: string,
+  key: string,
+  value: string | number
+) => {
   try {
+    await connectToDB();
+
+    await Order.findByIdAndUpdate(id, {
+      [key]: value,
+    });
+
+    revalidatePath("/transactions");
   } catch (error: any) {
     console.error(error.message);
   }
@@ -83,6 +117,7 @@ export const deleteOrder = async (id: string) => {
     await connectToDB();
 
     await Order.findByIdAndDelete(id);
+    revalidatePath("/transactions");
   } catch (error: any) {
     console.error(error.message);
   }

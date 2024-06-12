@@ -3,6 +3,7 @@ import UserAuth from "./UserAuth";
 import Navlinks from "./Navlinks";
 import MobileNavbar from "./MobileNavbar";
 import Cart from "./Cart";
+import Transactions from "./Transactions";
 
 const Navbar = () => {
   return (
@@ -20,6 +21,7 @@ const Navbar = () => {
         <Navlinks direction="horizontal" />
       </nav>
       <div className="flex items-center gap-x-4">
+        <Transactions />
         <Cart />
         <UserAuth />
       </div>
