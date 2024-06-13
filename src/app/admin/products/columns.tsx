@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
+import Link from 'next/link'
 import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<Product>[] = [
@@ -78,7 +78,6 @@ export const columns: ColumnDef<Product>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const product = row.original;
-      const router = useRouter();
 
       return (
         <DropdownMenu>
@@ -91,9 +90,9 @@ export const columns: ColumnDef<Product>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => router.push(`/admin/products/${product._id}`)}
+              asChild
             >
-              View
+              <Link href={`/admin/products/${product._id}`}>View</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Delete</DropdownMenuItem>
