@@ -1,14 +1,12 @@
-import QuantityTracker from "@/components/global/QuantityTracker";
 import ProductReview from "@/components/product/ProductReview";
-import StarReview from "@/components/product/StarReview";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { getProduct } from "@/lib/actions/product.action";
 import { formatPrice } from "@/lib/utils";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import { ProductClient } from "../page";
 import ProductPurchaseControlForm from "@/components/product/forms/ProductPurchaseControlForm";
+import ProductReviewForm from "@/components/product/ProductReviewForm";
+import ProductReviews from "@/components/product/ProductReviews";
 
 interface ProductPageProps {
   params: {
@@ -51,21 +49,13 @@ const page = async ({ params }: ProductPageProps) => {
       </div>
       <div>
         <h2 className="page-title mb-4">Product Reviews</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          <div className="flex flex-col gap-y-2">
-            <h3>Reviews</h3>
-            <ProductReview />
-            <ProductReview />
-            <ProductReview />
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <ProductReviews productId={product._id} />
           <div className="max-md:order-first">
-            <StarReview />
-            <div className="mb-2">
-              <Textarea placeholder="e.g. 'This product is ...'" />
-            </div>
-            <div className="flex justify-end">
-              <Button>Submit</Button>
-            </div>
+            <ProductReviewForm
+              productId={product._id}
+              rating={product.ratings}
+            />
           </div>
         </div>
       </div>

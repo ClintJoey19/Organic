@@ -148,7 +148,7 @@ const Order = async ({
             Total: <span className="font-semibold">{formatPrice(total)}</span>
           </p>
         </div>
-        <div className="flex justify-end gap-2">
+        <div className="flex flex-col justify-end gap-2">
           <OrderActions id={id} status={status} />
         </div>
       </div>

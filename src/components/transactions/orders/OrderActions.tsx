@@ -4,7 +4,6 @@ import { Status } from "./Orders";
 import CancelAction from "./CancelAction";
 import { Pencil, PencilLine } from "lucide-react";
 import { updateOrder } from "@/lib/actions/order.action";
-import ReviewActions from "./ReviewActions";
 
 interface OrderActionsProps {
   id: string;
@@ -34,13 +33,7 @@ const OrderActions = ({ id, status }: OrderActionsProps) => {
           <Button size="sm">Delivered</Button>
         </>
       )}
-      {status === "received" && <ReviewActions />}
-      {status === "reviewed" && (
-        <Button size="sm" variant="outline">
-          <Pencil className="w-4 h-4 mr-2" />
-          Edit Review
-        </Button>
-      )}
+      {status === "received" && <Button size="sm">Completed</Button>}
     </>
   );
 };

@@ -1,8 +1,24 @@
+import { formatDate } from "@/lib/utils";
 import { Star } from "lucide-react";
 import Image from "next/image";
 
-const ProductReview = () => {
-  const starred = 5;
+export interface Review {
+  id: string;
+  userId: string;
+  productId: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+}
+
+const ProductReview = async ({
+  id,
+  userId,
+  productId,
+  rating,
+  comment,
+  createdAt,
+}: Review) => {
   return (
     <div className="p-4 rounded-md border border-slate-300 flex gap-x-2">
       <div>
@@ -21,18 +37,17 @@ const ProductReview = () => {
               <Star
                 key={star}
                 className={`h-4 w-4 ${
-                  star <= starred ? "text-primary" : "text-slate-700"
+                  star <= rating ? "text-primary" : "text-slate-700"
                 }`}
               />
             ))}
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <p className="text-sm text-slate-500">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Culpa quod
-            labore ut ipsam illo delectus fugiat provident magni vero. Delectus?
+          <p className="text-sm text-slate-500">{comment}</p>
+          <p className="text-xs text-slate-500 text-end">
+            {formatDate(createdAt)}
           </p>
-          <p className="text-xs text-slate-500 text-end">05/30/2024</p>
         </div>
       </div>
     </div>

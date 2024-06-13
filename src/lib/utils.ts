@@ -21,6 +21,16 @@ export const formatPrice = (price: number | null) => {
   );
 };
 
+export const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const year = date.getFullYear();
+
+  return `${month}/${day}/${year}`;
+};
+
 export const getDaysOfMonth = (year: number, month: number, day: number) => {
   return new Date(year, month, day).getDate();
 };
