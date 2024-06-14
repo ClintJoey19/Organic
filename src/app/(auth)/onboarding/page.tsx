@@ -1,7 +1,11 @@
 import UserForm from "@/components/onboarding/UserForm";
+import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
 
-const page = () => {
+const page = async () => {
+  const user = await currentUser();
+  console.log(user);
+
   return (
     <div className="max-w-[1220px] h-screen grid grid-cols-1 md:grid-cols-2 place-content-center gap-4">
       <div className="relative max-md:hidden">

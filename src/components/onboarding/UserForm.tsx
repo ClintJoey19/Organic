@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useUser } from "@clerk/nextjs";
 import toast from "react-hot-toast";
-import { IUser, addUser } from "@/lib/actions/onboarding";
+import { IUser, addUser } from "@/lib/actions/user.action";
 import { LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 

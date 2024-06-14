@@ -11,6 +11,7 @@ import { Button } from "../ui/button";
 import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import { getCartItems } from "@/lib/actions/cart-item.action";
+import { currentUser } from "@clerk/nextjs/server";
 
 interface CartItem {
   _id: string;
@@ -71,11 +72,15 @@ const Cart = async () => {
               <p>Total:</p>
               <span>{formatPrice(totalAmount)}</span>
             </div>
-            <Button asChild>
-              <Link href={`/checkout?cart=666025f1618f8955d4f8e44b`}>
-                Checkout
-              </Link>
-            </Button>
+            {totalAmount !== 0 ? (
+              <Button asChild>
+                <Link href={`/checkout?cart=666025f1618f8955d4f8e44b`}>
+                  Checkout
+                </Link>
+              </Button>
+            ) : (
+              <Button disabled>Checkout</Button>
+            )}
           </div>
         </div>
       </SheetContent>

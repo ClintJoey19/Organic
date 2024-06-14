@@ -19,6 +19,7 @@ export const UserSchema = new mongoose.Schema(
     email: {
       type: String || null,
       min: 1,
+      unique: true,
       required: true,
     },
     password: {
