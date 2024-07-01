@@ -5,12 +5,13 @@ import Image from "next/image";
 import { CreditCard, HandCoins } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import CheckoutItem from "@/components/checkout/CheckoutItem";
 import { getCheckedItems } from "@/lib/actions/cart-item.action";
-import { createOrder } from "@/lib/actions/order.action";
-import toast from "react-hot-toast";
 import OrderCheckoutControl from "@/components/product/forms/OrderCheckoutControl";
+import { redirect } from "next/navigation";
+import { getUser } from "@/lib/actions/user.action";
+import { log } from "console";
 
 interface SearchParams {
   searchParams: {
@@ -21,15 +22,25 @@ interface SearchParams {
   };
 }
 
+const shippingFee = 50;
+const paymentMethod = "cod";
+
 const page = async ({ searchParams }: SearchParams) => {
   const { productId, price, quantity, cart } = searchParams;
+  const current = await currentUser();
+
+  if (!current) redirect("/");
+
+  const email = current?.emailAddresses[0].emailAddress;
+
+  const { _id, baranggay, municipality, province, zipcode, phoneNumber } =
+    await getUser(email);
+
   const cartItems = await getCheckedItems(cart);
   const products =
     productId && price && quantity
       ? [{ productId, price, quantity }, ...cartItems]
       : [...cartItems];
-
-  const shippingFee = 50;
   const orderTotal = products.reduce(
     (accumulator, product) => accumulator + product.price * product.quantity,
     0
@@ -37,8 +48,7 @@ const page = async ({ searchParams }: SearchParams) => {
 
   const totalAmount = orderTotal + shippingFee;
 
-  const address = "4403, Zone 6, Bulawan Jr. Lupi, Camarines Sur";
-  let paymentMethod = "cod";
+  const address = `${zipcode}, ${baranggay}, ${municipality}, ${province}`;
 
   return (
     <section className="container min-h-[86vh] pt-4">
@@ -120,7 +130,7 @@ const page = async ({ searchParams }: SearchParams) => {
             </div>
             <Separator className="my-4" />
             <OrderCheckoutControl
-              userId="666025f1618f8955d4f8e44b"
+              userId={_id}
               products={products}
               total={totalAmount}
               payment={paymentMethod}

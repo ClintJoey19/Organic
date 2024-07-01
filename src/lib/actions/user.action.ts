@@ -18,26 +18,15 @@ export interface IUser {
   phoneNumber: string;
 }
 
-export const getUser = async ({
-  id,
-  email,
-}: {
-  id?: string;
-  email?: string;
-}) => {
+export const getUser = async (email: string) => {
   try {
     await connectToDB();
 
-    const filter = {
-      id,
-      email,
-    };
-
-    const res = await User.findOne(filter);
+    const res = await User.findOne({ email });
 
     if (!res) throw new Error("User cannot be find");
 
-    return res._id;
+    return parseJSON(res);
   } catch (error: any) {
     console.error(error.message);
   }
