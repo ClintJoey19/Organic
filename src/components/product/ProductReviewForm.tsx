@@ -50,12 +50,7 @@ const ProductReviewForm = ({ productId, rating }: ProductReviewFormProps) => {
 
       setIsSubmitting(true);
 
-      await createReview(
-        "666025f1618f8955d4f8e44b",
-        productId,
-        starred,
-        values.comment
-      );
+      await createReview(productId, starred, values.comment);
 
       toast.success("Review posted successfully");
     } catch (error: any) {

@@ -1,4 +1,5 @@
 import UserForm from "@/components/onboarding/UserForm";
+import { getUser } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { redirect } from "next/navigation";
@@ -6,7 +7,11 @@ import { redirect } from "next/navigation";
 const page = async () => {
   const { userId } = await auth();
 
-  if (userId) redirect("/");
+  if (!userId) redirect("/");
+
+  const user = await getUser(userId);
+
+  if (user) redirect("/");
 
   return (
     <div className="max-w-[1220px] h-screen grid grid-cols-1 md:grid-cols-2 place-content-center gap-4">
@@ -23,7 +28,7 @@ const page = async () => {
           </p>
         </div>
         <div className="">
-          <UserForm />
+          <UserForm userId={userId} />
         </div>
       </div>
     </div>

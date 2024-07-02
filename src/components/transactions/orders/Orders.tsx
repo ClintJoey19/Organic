@@ -1,5 +1,7 @@
 import { getUserOrders } from "@/lib/actions/order.action";
 import Order from "./Order";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export type Status =
   | "pending"
@@ -24,15 +26,12 @@ export interface IOrder {
   };
 }
 
-const Orders = async () => {
-  const orders: IOrder[] = await getUserOrders(
-    "666025f1618f8955d4f8e44b",
-    false
-  );
+const Orders = async ({ userId }: { userId: string }) => {
+  const orders: IOrder[] = await getUserOrders(userId, false);
 
   return (
     <div className="flex flex-col gap-4">
-      {orders.map((order) => (
+      {orders?.map((order) => (
         <Order
           key={order._id}
           id={order._id}

@@ -11,14 +11,11 @@ const page = () => {
             We Provide Fresh Foods for you
           </h3>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti
-            blanditiis rerum, accusamus quo mollitia sunt nihil, qui enim
-            laborum nam ad odio, eius quod reprehenderit ut minus. Veritatis
-            consequuntur fugiat, in libero optio explicabo. Tenetur impedit illo
-            rem quis earum aperiam possimus reprehenderit itaque iusto rerum
-            nesciunt maiores sint, quas dicta dolores? Quidem reiciendis tenetur
-            quaerat repellat, maxime quasi. Nobis asperiores suscipit fugit
-            ducimus molestias tempora accusantium, ipsa repudiandae eum!
+            <span className="text-primary font-semibold">Organic</span> was born
+            from a passion for nourishing our bodies with the purest, most
+            delicious ingredients that nature has to offer. We believe in the
+            power of organic, sustainable food to fuel a vibrant life and a
+            healthy planet.
           </p>
         </div>
         <div className="relative h-[400px] overflow-hidden rounded-xl">

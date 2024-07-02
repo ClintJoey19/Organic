@@ -3,6 +3,8 @@ import { revalidatePath } from "next/cache";
 import { Review } from "../models/review.model";
 import { connectToDB } from "../mongoose";
 import { parseJSON } from "../utils";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export const getReviews = async (productId: string) => {
   try {
@@ -38,13 +40,16 @@ export const getUserReviews = async (userId: string, productId: string) => {
 };
 
 export const createReview = async (
-  userId: string,
   productId: string,
   rating: number,
   comment: string
 ) => {
   try {
     await connectToDB();
+
+    const { userId } = await auth();
+
+    if (!userId) redirect("/sign-in");
 
     const filter = {
       userId,

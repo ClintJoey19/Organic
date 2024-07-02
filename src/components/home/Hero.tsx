@@ -11,8 +11,8 @@ const Hero = () => {
           Organic & <span className="text-primary">Healthy Food</span> Everyday
         </h1>
         <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minus
-          reiciendis est temporibus at in harum cupiditate modi, earum omnis ut?
+          Discover a vibrant world of fresh, nourishing ingredients delivered
+          straight to your door.
         </p>
         <div className="mt-4 flex gap-2">
           <Button asChild>

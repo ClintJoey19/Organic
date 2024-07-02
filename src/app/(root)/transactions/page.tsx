@@ -1,6 +1,8 @@
 import Tab from "@/components/global/Tab";
 import CompletedOrders from "@/components/transactions/completed/CompletedOrders";
 import Orders from "@/components/transactions/orders/Orders";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 interface SearchParams {
   searchParams: {
@@ -8,7 +10,11 @@ interface SearchParams {
   };
 }
 
-const page = ({ searchParams }: SearchParams) => {
+const page = async ({ searchParams }: SearchParams) => {
+  const { userId } = await auth();
+
+  if (!userId) redirect("/");
+
   const currentPage = searchParams.page || "orders";
 
   return (
@@ -19,8 +25,8 @@ const page = ({ searchParams }: SearchParams) => {
         <Tab name="Completed" page="completed" currentPage={currentPage} />
       </div>
       <div>
-        {currentPage === "orders" && <Orders />}
-        {currentPage === "completed" && <CompletedOrders />}
+        {currentPage === "orders" && <Orders userId={userId} />}
+        {currentPage === "completed" && <CompletedOrders userId={userId} />}
       </div>
     </section>
   );

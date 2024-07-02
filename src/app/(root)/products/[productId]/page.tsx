@@ -7,8 +7,9 @@ import { ProductClient } from "../page";
 import ProductPurchaseControlForm from "@/components/product/forms/ProductPurchaseControlForm";
 import ProductReviewForm from "@/components/product/ProductReviewForm";
 import ProductReviews from "@/components/product/ProductReviews";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { getUser } from "@/lib/actions/user.action";
+import { redirect } from "next/navigation";
 
 interface ProductPageProps {
   params: {
@@ -17,13 +18,6 @@ interface ProductPageProps {
 }
 
 const page = async ({ params }: ProductPageProps) => {
-  const current = await currentUser();
-  const email = current?.emailAddresses[0].emailAddress;
-
-  if (email) {
-    const user = await getUser(email);
-  }
-
   const product: ProductClient = await getProduct(params.productId);
 
   return (

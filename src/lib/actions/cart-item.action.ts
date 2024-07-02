@@ -3,8 +3,9 @@ import { revalidatePath } from "next/cache";
 import { CartItem } from "../models/cart-item.model";
 import { connectToDB } from "../mongoose";
 import { parseJSON } from "../utils";
+import { auth } from "@clerk/nextjs/server";
 
-export const getCartItems = async (userId: string) => {
+export const getCartItems = async (userId: string | null) => {
   try {
     await connectToDB();
 
@@ -52,7 +53,6 @@ export const getCartItem = async (id: string) => {
 };
 
 export const createCartItem = async (
-  userId: string,
   productId: string,
   price: number,
   quantity: number,
@@ -60,6 +60,10 @@ export const createCartItem = async (
 ) => {
   try {
     await connectToDB();
+
+    const { userId } = await auth();
+
+    if (!userId) throw new Error("Unauthorized user");
 
     const filter = {
       userId,

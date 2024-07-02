@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 export const UserSchema = new mongoose.Schema(
   {
+    clerkId: {
+      type: String,
+      required: true,
+    },
     firstname: {
       type: String || null,
       required: true,

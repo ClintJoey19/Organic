@@ -32,6 +32,7 @@ const OrderCheckoutControl = ({
   const onSubmit = async () => {
     try {
       setIsSubmitting(true);
+
       await createOrder(userId, products, total, payment, address, isInCart);
 
       toast.success("Checkout successful");

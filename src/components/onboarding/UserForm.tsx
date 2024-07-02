@@ -27,7 +27,7 @@ const formSchema = z.object({
   phoneNumber: z.string().min(1, { message: "Zip Code field required" }),
 });
 
-const UserForm = () => {
+const UserForm = ({ userId }: { userId: string }) => {
   const { user } = useUser();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -47,6 +47,7 @@ const UserForm = () => {
     try {
       setIsSubmitting(true);
       const newUser: IUser = {
+        clerkId: userId,
         firstname: user?.firstName ?? "",
         lastname: user?.lastName ?? "",
         username: user?.username ?? "",

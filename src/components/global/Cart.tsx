@@ -11,7 +11,7 @@ import { Button } from "../ui/button";
 import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import { getCartItems } from "@/lib/actions/cart-item.action";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 
 interface CartItem {
   _id: string;
@@ -23,7 +23,9 @@ interface CartItem {
 }
 
 const Cart = async () => {
-  const cartItems: CartItem[] = await getCartItems("666025f1618f8955d4f8e44b");
+  const user = await auth();
+  const cartItems: CartItem[] = await getCartItems(user?.userId);
+
   const totalAmount = cartItems.reduce<number>(
     (accumulator: number, item: CartItem) => {
       if (item.isChecked) {
@@ -74,9 +76,7 @@ const Cart = async () => {
             </div>
             {totalAmount !== 0 ? (
               <Button asChild>
-                <Link href={`/checkout?cart=666025f1618f8955d4f8e44b`}>
-                  Checkout
-                </Link>
+                <Link href={`/checkout?cart=${user?.userId}`}>Checkout</Link>
               </Button>
             ) : (
               <Button disabled>Checkout</Button>

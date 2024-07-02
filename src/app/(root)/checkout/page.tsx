@@ -10,7 +10,7 @@ import CheckoutItem from "@/components/checkout/CheckoutItem";
 import { getCheckedItems } from "@/lib/actions/cart-item.action";
 import OrderCheckoutControl from "@/components/product/forms/OrderCheckoutControl";
 import { redirect } from "next/navigation";
-import { getUser } from "@/lib/actions/user.action";
+import { IUser, getUser } from "@/lib/actions/user.action";
 import { log } from "console";
 
 interface SearchParams {
@@ -26,15 +26,16 @@ const shippingFee = 50;
 const paymentMethod = "cod";
 
 const page = async ({ searchParams }: SearchParams) => {
+  const { userId } = await auth();
+
+  if (!userId) redirect("/");
+
+  const user: IUser = await getUser(userId);
+
+  if (!user) redirect("/onboarding");
+
+  const { baranggay, municipality, province, zipcode, phoneNumber } = user;
   const { productId, price, quantity, cart } = searchParams;
-  const current = await currentUser();
-
-  if (!current) redirect("/");
-
-  const email = current?.emailAddresses[0].emailAddress;
-
-  const { _id, baranggay, municipality, province, zipcode, phoneNumber } =
-    await getUser(email);
 
   const cartItems = await getCheckedItems(cart);
   const products =
@@ -57,9 +58,7 @@ const page = async ({ searchParams }: SearchParams) => {
         <div className="md:col-span-2 border border-slate-300 p-4 rounded-md flex flex-col gap-2">
           <div className="w-full flex max-md:flex-col gap-2">
             <h3 className="font-semibold">Address</h3>
-            <p className="w-full text-sm text-end">
-              4403, Zone 6, Bulawan Jr. Lupi, Camarines Sur
-            </p>
+            <p className="w-full text-sm text-end">{address}</p>
           </div>
           <Separator className="my-2" />
           <div className="w-full flex flex-col gap-4">
@@ -130,7 +129,7 @@ const page = async ({ searchParams }: SearchParams) => {
             </div>
             <Separator className="my-4" />
             <OrderCheckoutControl
-              userId={_id}
+              userId={userId}
               products={products}
               total={totalAmount}
               payment={paymentMethod}

@@ -1,17 +1,15 @@
 import { getUserOrders } from "@/lib/actions/order.action";
-import React from "react";
 import Order from "../orders/Order";
 import { IOrder } from "../orders/Orders";
+import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
 
-const CompletedOrders = async () => {
-  const completedOrders: IOrder[] = await getUserOrders(
-    "666025f1618f8955d4f8e44b",
-    true
-  );
+const CompletedOrders = async ({ userId }: { userId: string }) => {
+  const completedOrders: IOrder[] = await getUserOrders(userId, true);
 
   return (
     <div className="flex flex-col gap-4">
-      {completedOrders.map((order) => (
+      {completedOrders?.map((order) => (
         <Order
           key={order._id}
           id={order._id}

@@ -12,8 +12,8 @@ const Footer = () => {
             <p className="text-xl font-semibold">Organic</p>
           </div>
           <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-            Dignissimos, laboriosam.
+            Discover delicious recipes, meal kits, and healthy living
+            inspiration.
           </p>
         </div>
         <div>

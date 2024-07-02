@@ -4,6 +4,7 @@ import { connectToDB } from "../mongoose";
 import { parseJSON } from "../utils";
 
 export interface IUser {
+  clerkId: string;
   firstname: string;
   lastname: string;
   username: string;
@@ -18,11 +19,11 @@ export interface IUser {
   phoneNumber: string;
 }
 
-export const getUser = async (email: string) => {
+export const getUser = async (clerkId: string) => {
   try {
     await connectToDB();
 
-    const res = await User.findOne({ email });
+    const res = await User.findOne({ clerkId });
 
     if (!res) throw new Error("User cannot be find");
 
