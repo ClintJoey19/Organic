@@ -40,13 +40,7 @@ const ProductPurchaseControlForm = ({
 
   const addToCart = async () => {
     try {
-      await createCartItem(
-        "666025f1618f8955d4f8e44b",
-        productId,
-        price,
-        quantity,
-        pathname
-      );
+      await createCartItem(productId, price, quantity, pathname);
 
       toast.success("Product added to cart");
     } catch (error: any) {
