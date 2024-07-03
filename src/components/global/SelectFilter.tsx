@@ -18,14 +18,22 @@ interface SelectFilterProps {
   filter?: string;
 }
 
+interface SearchQuery {
+  name: string;
+  value: string;
+}
+
 const SelectFilter = ({ label, items, filter }: SelectFilterProps) => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
   const createQueryString = useCallback(
-    (name: string, value: string) => {
+    (queries: SearchQuery[]) => {
       const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
+
+      for (const query of queries) {
+        params.set(query.name, query.value);
+      }
 
       return params.toString();
     },
@@ -33,7 +41,26 @@ const SelectFilter = ({ label, items, filter }: SelectFilterProps) => {
   );
 
   const filterProducts = (value: string) => {
-    const query = createQueryString(label, value);
+    let query = "";
+
+    if (label === "sort") {
+      const params = value.split("-");
+      query = createQueryString([
+        {
+          name: label,
+          value: params[0],
+        },
+        { name: "dir", value: params[1] },
+      ]);
+    } else {
+      query = createQueryString([
+        {
+          name: label,
+          value,
+        },
+      ]);
+    }
+
     router.push(`/products?${query}`);
   };
 

@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { Button } from "../ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-const PaginationPage = () => {
+const PaginationPage = ({ hasNextPage }: { hasNextPage: boolean }) => {
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get("page")) || 1;
 
@@ -36,7 +36,11 @@ const PaginationPage = () => {
           <ArrowLeft className="h-4 w-4 mr-2" /> Prev
         </Button>
       )}
-      <Button variant="outline" onClick={() => pageNavigate(currentPage + 1)}>
+      <Button
+        variant="outline"
+        onClick={() => pageNavigate(currentPage + 1)}
+        disabled={!hasNextPage}
+      >
         Next <ArrowRight className="h-4 w-4 ml-2" />
       </Button>
     </div>

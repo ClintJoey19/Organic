@@ -137,10 +137,18 @@ export const priceSort = [
 export const nameSort = [
   {
     label: "A-Z",
-    value: "asc",
+    value: "name-asc",
   },
   {
     label: "Z-A",
-    value: "desc",
+    value: "name-desc",
+  },
+  {
+    label: "Price (ASC)",
+    value: "price-asc",
+  },
+  {
+    label: "Price (DESC)",
+    value: "price-desc",
   },
 ];

@@ -6,7 +6,7 @@ import { getProducts } from "@/lib/actions/product.action";
 import { ProductClient } from "@/app/(root)/products/page";
 
 const FeaturedProducts = async () => {
-  const products = await getProducts({ isPublished: true });
+  const products: ProductClient = await getProducts({ isPublished: true });
   return (
     <section className="container">
       <div className="flex flex-col gap-1 my-4">
@@ -16,7 +16,7 @@ const FeaturedProducts = async () => {
         </p>
       </div>
       <div className="grid grid-cols-5 max-lg:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 max-xs:grid-cols-1 gap-2">
-        {products.map((product: ProductClient) => (
+        {products.data.map((product) => (
           <Product
             key={product._id}
             id={product._id}

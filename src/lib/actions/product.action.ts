@@ -8,16 +8,16 @@ interface Filters {
   page?: number;
   isPublished?: boolean;
   category?: string;
-  name?: string;
-  price?: string;
+  sort?: string;
+  dir?: string;
 }
 
 export const getProducts = async ({
   page = 1,
   isPublished,
   category,
-  name,
-  price,
+  sort,
+  dir,
 }: Filters) => {
   try {
     await connectToDB();
@@ -33,13 +33,11 @@ export const getProducts = async ({
     if (category && category !== "all")
       filterQuery = { ...filterQuery, category };
 
-    if (name) {
-      sortQuery = setSortQuery(sortQuery, "name", name);
+    if (sort && dir) {
+      sortQuery = setSortQuery(sortQuery, sort, dir);
     }
 
-    if (price) {
-      sortQuery = setSortQuery(sortQuery, "price", price);
-    }
+    const productsCount = await Product.countDocuments(filterQuery);
 
     const res = await Product.find(filterQuery)
       .sort(sortQuery)
@@ -48,7 +46,9 @@ export const getProducts = async ({
 
     if (!res) throw new Error("There was an error fetching the products");
 
-    return parseJSON(res);
+    const hasNextPage = skip + limit < productsCount;
+
+    return { data: parseJSON(res), hasNextPage };
   } catch (error: any) {
     console.error(error.message);
     throw new Error("Failed to get products");
