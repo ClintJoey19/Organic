@@ -1,8 +1,14 @@
 import PaginationPage from "@/components/global/PaginationPage";
 import Product from "@/components/global/Product";
 import SelectFilter from "@/components/global/SelectFilter";
-import { categoryFilters, nameSort, priceSort } from "@/constants";
+import ProductsController from "@/components/products/ProductsController";
+import { categoryFilters, nameSort } from "@/constants";
 import { getProducts } from "@/lib/actions/product.action";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Products",
+};
 
 interface SearchParams {
   searchParams: {
@@ -43,8 +49,15 @@ const page = async ({ searchParams }: SearchParams) => {
   });
 
   return (
-    <section className="flex">
-      <div className="w-[250px] max-xl:hidden flex flex-col gap-4 p-4 border-r border-slate-200">
+    <section className="flex relative">
+      <div className="md:hidden fixed top-[10vh] right-1 z-10">
+        <ProductsController
+          filterCategory={filterCategory}
+          sortName={sortName}
+          sortDir={sortDir}
+        />
+      </div>
+      <div className="w-[250px] max-md:hidden flex flex-col gap-4 p-4 border-r border-slate-200">
         <h2 className="text-lg font-semibold">Controls</h2>
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
@@ -67,7 +80,7 @@ const page = async ({ searchParams }: SearchParams) => {
       </div>
       <div className="w-full flex flex-col gap-4 p-4">
         <h2 className="page-title">Products</h2>
-        <div className="grid grid-cols-5 max-lg:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 max-xs:grid-cols-1 gap-4">
+        <div className="grid grid-cols-5 max-xl:grid-cols-4 max-lg:grid-cols-3 max-sm:grid-cols-2 max-xs:grid-cols-1 gap-4">
           {data.map((product) => (
             <Product
               key={product._id}

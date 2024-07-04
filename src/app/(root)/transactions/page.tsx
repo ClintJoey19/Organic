@@ -2,7 +2,12 @@ import Tab from "@/components/global/Tab";
 import CompletedOrders from "@/components/transactions/completed/CompletedOrders";
 import Orders from "@/components/transactions/orders/Orders";
 import { auth } from "@clerk/nextjs/server";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Transactions",
+};
 
 interface SearchParams {
   searchParams: {

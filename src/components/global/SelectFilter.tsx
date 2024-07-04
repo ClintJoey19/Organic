@@ -35,6 +35,8 @@ const SelectFilter = ({ label, items, filter }: SelectFilterProps) => {
         params.set(query.name, query.value);
       }
 
+      params.set("page", "1");
+
       return params.toString();
     },
     [searchParams]

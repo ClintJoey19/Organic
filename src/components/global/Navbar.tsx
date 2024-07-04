@@ -21,8 +21,6 @@ const Navbar = () => {
         <Navlinks direction="horizontal" />
       </nav>
       <div className="flex items-center gap-x-4">
-        <Transactions />
-        <Cart />
         <UserAuth />
       </div>
     </section>

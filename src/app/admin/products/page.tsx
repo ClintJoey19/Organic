@@ -1,6 +1,11 @@
 import AddProduct from "@/components/admin/products/AddProduct";
 import { ProductsTable } from "@/components/admin/products/ProductsTable";
 import { getProducts } from "@/lib/actions/product.action";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Admin | Products",
+};
 
 interface ProductsAdmin {
   data: {

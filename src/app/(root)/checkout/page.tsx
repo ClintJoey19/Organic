@@ -11,7 +11,11 @@ import { getCheckedItems } from "@/lib/actions/cart-item.action";
 import OrderCheckoutControl from "@/components/product/forms/OrderCheckoutControl";
 import { redirect } from "next/navigation";
 import { IUser, getUser } from "@/lib/actions/user.action";
-import { log } from "console";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Checkout",
+};
 
 interface SearchParams {
   searchParams: {

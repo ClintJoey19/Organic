@@ -1,21 +1,28 @@
-"use client";
-import { UserButton, useAuth } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { LogIn } from "lucide-react";
+import Transactions from "./Transactions";
+import Cart from "./Cart";
+import { auth } from "@clerk/nextjs/server";
 
 const UserAuth = () => {
-  const user = useAuth();
+  const { userId } = auth();
 
   return (
-    <div className="flex items-center">
-      {!user.isSignedIn ? (
-        <Button size="sm">
-          <Link href="/sign-in">Sign In</Link>
-          <LogIn className="ml-2 h-4 w-4" />
+    <div className="flex items-center gap-4">
+      {!userId ? (
+        <Button size="sm" asChild>
+          <Link href="/sign-in">
+            Sign In <LogIn className="ml-2 h-4 w-4" />
+          </Link>
         </Button>
       ) : (
-        <UserButton />
+        <>
+          <Transactions />
+          <Cart />
+          <UserButton />
+        </>
       )}
     </div>
   );

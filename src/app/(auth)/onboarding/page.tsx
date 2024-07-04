@@ -1,8 +1,14 @@
 import UserForm from "@/components/onboarding/UserForm";
 import { getUser } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs/server";
+import { Metadata } from "next";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Organic | Onboarding",
+  description: "Welcome to Organic. We will helo you get onboarded.",
+};
 
 const page = async () => {
   const { userId } = await auth();
