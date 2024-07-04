@@ -18,7 +18,7 @@ interface ProductPageProps {
 }
 
 const page = async ({ params }: ProductPageProps) => {
-  const product: ProductClient = await getProduct(params.productId);
+  const product = await getProduct(params.productId);
 
   return (
     <section className="container">
