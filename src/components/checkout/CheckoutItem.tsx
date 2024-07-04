@@ -9,9 +9,7 @@ interface CheckoutItemProps {
 }
 
 const CheckoutItem = async ({ productId, quantity }: CheckoutItemProps) => {
-  const { name, price, productImg }: ProductClient = await getProduct(
-    productId
-  );
+  const { name, price, productImg } = await getProduct(productId);
   return (
     <div className="border border-slate-300 p-2 rounded-sm flex justify-between items-center gap-2">
       <Image
