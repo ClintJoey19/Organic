@@ -35,6 +35,13 @@ export const formatDate = (dateString: string) => {
   return `${month}/${day}/${year}`;
 };
 
+export const formatDate2 = (day: number, month: number, year: number) => {
+  const dayFormat = String(day).padStart(2, "0");
+  const monthFormat = String(month).padStart(2, "0");
+
+  return `${dayFormat}/${monthFormat}/${year}`;
+};
+
 export const getDaysOfMonth = (year: number, month: number, day: number) => {
   return new Date(year, month, day).getDate();
 };

@@ -1,8 +1,6 @@
 import { getUserOrders } from "@/lib/actions/order.action";
 import Order from "../orders/Order";
 import { IOrder } from "../orders/Orders";
-import { redirect } from "next/navigation";
-import { auth } from "@clerk/nextjs/server";
 
 const CompletedOrders = async ({ userId }: { userId: string }) => {
   const completedOrders: IOrder[] = await getUserOrders(userId, true);

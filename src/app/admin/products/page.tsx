@@ -7,6 +7,12 @@ export const metadata: Metadata = {
   title: "Admin | Products",
 };
 
+interface SearchParams {
+  searchParams: {
+    page: number;
+  };
+}
+
 interface ProductsAdmin {
   data: {
     _id: string;
@@ -25,8 +31,9 @@ interface ProductsAdmin {
   hasNextPage: boolean;
 }
 
-const page = async () => {
-  const products: ProductsAdmin = await getProducts({});
+const page = async ({ searchParams }: SearchParams) => {
+  const page = Number(searchParams.page) || 1;
+  const { data, hasNextPage }: ProductsAdmin = await getProducts({ page });
 
   return (
     <section className="w-full p-4 flex flex-col">
@@ -35,7 +42,7 @@ const page = async () => {
         <AddProduct />
       </div>
       <div className="w-full">
-        {products && <ProductsTable rows={products.data} />}
+        <ProductsTable rows={data} page={page} hasNextPage={hasNextPage} />
       </div>
     </section>
   );

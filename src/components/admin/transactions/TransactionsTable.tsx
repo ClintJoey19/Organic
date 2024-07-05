@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import {
   ColumnFiltersState,
   SortingState,
@@ -29,31 +28,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { columns } from "@/app/admin/products/columns";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { columns } from "@/app/admin/transactions/columns";
+import { Order } from "@/app/admin/transactions/page";
 
-export type Product = {
-  _id: string;
-  name: string;
-  description?: string;
-  category?: string;
-  price?: number;
-  stocks?: number;
-  ratings?: number;
-  sold?: number;
-  productImg?: string;
-  isPublished: boolean;
-  createdAt: string;
-  updatedAt: string;
-};
-
-interface ProductsTableProps {
-  rows: Product[];
+interface TransactionsTableProps {
+  rows: Order[];
   page: number;
   hasNextPage: boolean;
 }
 
-export function ProductsTable({ rows, page, hasNextPage }: ProductsTableProps) {
+const TransactionsTable = ({
+  rows,
+  page,
+  hasNextPage,
+}: TransactionsTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -80,24 +70,16 @@ export function ProductsTable({ rows, page, hasNextPage }: ProductsTableProps) {
   });
 
   const nextPage = () => {
-    router.push(`/admin/products?page=${page + 1}`);
+    router.push(`/admin/transactions?page=${page + 1}`);
   };
 
   const prevPage = () => {
-    router.push(`/admin/products?page=${page - 1}`);
+    router.push(`/admin/transactions?page=${page - 1}`);
   };
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter name..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+      <div className="flex items-center justify-end py-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -201,4 +183,6 @@ export function ProductsTable({ rows, page, hasNextPage }: ProductsTableProps) {
       </div>
     </div>
   );
-}
+};
+
+export default TransactionsTable;

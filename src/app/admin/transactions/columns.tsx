@@ -2,7 +2,7 @@
 import { Product } from "@/components/admin/products/ProductsTable";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { formatPrice } from "@/lib/utils";
+import { formatDate2, formatPrice } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import {
@@ -17,8 +17,9 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { deleteProduct } from "@/lib/actions/product.action";
 import toast from "react-hot-toast";
+import { Order } from "./page";
 
-export const columns: ColumnDef<Product>[] = [
+export const columns: ColumnDef<Order>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -42,36 +43,51 @@ export const columns: ColumnDef<Product>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "name",
-    header: "Name",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
+    accessorKey: "_id",
+    header: "Order Id",
+    cell: ({ row }) => <div className="">{row.getValue("_id")}</div>,
   },
   {
-    accessorKey: "price",
-    header: "Price",
+    accessorKey: "userId",
+    header: "User Id",
+    cell: ({ row }) => <div className="">{row.getValue("userId")}</div>,
+  },
+  {
+    accessorKey: "total",
+    header: "Total",
     cell: ({ row }) => (
-      <div className="">{formatPrice(row.getValue("price") || 0)}</div>
+      <div className="">{formatPrice(row.getValue("total") || 0)}</div>
     ),
   },
   {
-    accessorKey: "stocks",
-    header: "Stocks",
+    accessorKey: "status",
+    header: "Status",
     cell: ({ row }) => (
-      <div className="">{`${row.getValue("stocks") || 0} kg`}</div>
+      <div className="capitalize">{row.getValue("status")}</div>
     ),
   },
   {
-    accessorKey: "isPublished",
-    enableHiding: false,
-    header: "Published",
+    accessorKey: "payment",
+    header: "Payment",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("payment")}</div>
+    ),
+  },
+  {
+    accessorKey: "arrival",
+    header: "Arrival",
     cell: ({ row }) => {
-      const isPublished = row.getValue("isPublished");
+      const {
+        day,
+        month,
+        year,
+      }: {
+        day: number;
+        month: number;
+        year: number;
+      } = row.getValue("arrival");
 
-      return (
-        <Badge variant={isPublished ? "default" : "outline"}>
-          {isPublished ? "Yes" : "No"}
-        </Badge>
-      );
+      return <div>{formatDate2(day, month, year)}</div>;
     },
   },
   {
@@ -79,11 +95,11 @@ export const columns: ColumnDef<Product>[] = [
     header: "Actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const product = row.original;
+      const order = row.original;
 
       const onDelete = async () => {
         try {
-          await deleteProduct(product._id);
+          await deleteProduct(order._id);
           toast.success("Product deleted");
         } catch (error: any) {
           console.error(error.message);
@@ -102,7 +118,7 @@ export const columns: ColumnDef<Product>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem asChild>
-              <Link href={`/admin/products/${product._id}`}>View</Link>
+              <Link href={`/admin/transactions/${order._id}`}>View</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={onDelete}>Delete</DropdownMenuItem>

@@ -11,7 +11,7 @@ interface OrderItemProps {
 }
 
 const OrderItem = async ({ id, productId, quantity }: OrderItemProps) => {
-  const product: ProductClient = await getProduct(productId);
+  const product = await getProduct(productId);
 
   return (
     <div className="flex items-center gap-2 border border-slate-300 rounded-md">

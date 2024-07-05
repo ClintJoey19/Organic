@@ -61,7 +61,12 @@ const ProductImageForm = ({ id, productImg }: ProductImageFormProps) => {
             </div>
           ) : (
             <div className="relative aspect-video rounded-md overflow-hidden">
-              <Image src={productImg} alt="product-img" fill />
+              <Image
+                src={productImg}
+                alt="product-img"
+                fill
+                className="object-contain"
+              />
             </div>
           ))}
         {isEditing && (

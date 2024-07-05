@@ -124,6 +124,8 @@ export const deleteProduct = async (id: string) => {
     await connectToDB();
 
     await Product.findByIdAndDelete(id);
+
+    revalidatePath("/admin/products");
   } catch (error: any) {
     console.error(error.message);
   }

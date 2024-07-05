@@ -6,15 +6,22 @@ import { calculateArrivalDate, parseJSON } from "../utils";
 import { deleteAllCheckedItems } from "./cart-item.action";
 import { createOrderItem } from "./order-item.action";
 
-export const getOrders = async () => {
+export const getOrders = async (page = 1) => {
   try {
     await connectToDB();
 
-    const res = await Order.find();
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
+    const ordersCount = await Order.countDocuments();
+
+    const res = await Order.find().limit(limit).skip(skip);
 
     if (!res) throw new Error("There was an error fetching the orders");
 
-    return parseJSON(res);
+    const hasNextPage = skip + limit < ordersCount;
+
+    return { data: parseJSON(res), hasNextPage };
   } catch (error: any) {
     console.error(error.message);
   }
