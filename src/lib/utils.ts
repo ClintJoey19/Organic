@@ -21,6 +21,10 @@ export const formatPrice = (price: number | null) => {
   );
 };
 
+export const formatRating = (ratings: number) => {
+  return !ratings ? 0 : ratings.toFixed(1);
+};
+
 export const formatDate = (dateString: string) => {
   const date = new Date(dateString);
 

@@ -24,10 +24,12 @@ const page = async ({ searchParams }: SearchParams) => {
 
   return (
     <section className="container min-h-[88vh] pt-4">
-      <h2 className="page-title mb-4">Transactions</h2>
-      <div className="flex justify-end gap-x-2 mb-4">
-        <Tab name="Orders" page="orders" currentPage={currentPage} />
-        <Tab name="Completed" page="completed" currentPage={currentPage} />
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="page-title">Transactions</h2>
+        <div className="flex gap-x-2">
+          <Tab name="Orders" page="orders" currentPage={currentPage} />
+          <Tab name="Completed" page="completed" currentPage={currentPage} />
+        </div>
       </div>
       <div>
         {currentPage === "orders" && <Orders userId={userId} />}

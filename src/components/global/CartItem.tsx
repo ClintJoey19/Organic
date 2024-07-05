@@ -20,7 +20,7 @@ const CartItem = async ({
   quantity,
   isChecked,
 }: CartItemProps) => {
-  const product: ProductClient = await getProduct(productId);
+  const product = await getProduct(productId);
 
   return (
     <div className="flex flex-col justify-between border border-slate-200 p-2 rounded-md hover:shadow-md transition cursor-pointer relative">

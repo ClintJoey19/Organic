@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, formatRating } from "@/lib/utils";
 import { Star } from "lucide-react";
 import { createCartItem } from "@/lib/actions/cart-item.action";
 import toast from "react-hot-toast";
@@ -37,6 +37,7 @@ const Product = ({
       console.error(error.message);
     }
   };
+
   return (
     <div className="w-full rounded-xl hover:shadow-md transition flex flex-col overflow-hidden border border-slate-200 relative">
       <div className="w-full h-[200px] relative overflow-hidden">
@@ -58,7 +59,8 @@ const Product = ({
         <div className="flex flex-col gap-y-2 items-end">
           <p className="text-left">{formatPrice(price)}</p>
           <p className="flex items-center gap-x-1">
-            {ratings || 0} <Star className="h-4 w-4 text-primary" />
+            {formatRating(ratings || 0)}{" "}
+            <Star className="h-4 w-4 text-primary" />
           </p>
         </div>
         <div className="flex flex-col gap-2">

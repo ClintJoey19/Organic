@@ -2,8 +2,9 @@
 import QuantityTracker from "@/components/global/QuantityTracker";
 import { Button } from "@/components/ui/button";
 import { createCartItem } from "@/lib/actions/cart-item.action";
+import { useAuth } from "@clerk/nextjs";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -22,6 +23,8 @@ const ProductPurchaseControlForm = ({
 }: ProductPurchaseControlFormProps) => {
   const [quantity, setQuantity] = useState(1);
   const pathname = usePathname();
+  const router = useRouter();
+  const { userId } = useAuth();
 
   const handleQuantity = (operation: Operator) => {
     switch (operation) {
@@ -40,6 +43,8 @@ const ProductPurchaseControlForm = ({
 
   const addToCart = async () => {
     try {
+      if (!userId) return router.push("/sign-in");
+
       await createCartItem(productId, price, quantity, pathname);
 
       toast.success("Product added to cart");

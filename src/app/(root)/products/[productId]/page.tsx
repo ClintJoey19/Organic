@@ -1,15 +1,11 @@
-import ProductReview from "@/components/product/ProductReview";
 import { getProduct } from "@/lib/actions/product.action";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, formatRating } from "@/lib/utils";
 import { Star } from "lucide-react";
 import Image from "next/image";
-import { ProductClient } from "../page";
 import ProductPurchaseControlForm from "@/components/product/forms/ProductPurchaseControlForm";
 import ProductReviewForm from "@/components/product/ProductReviewForm";
 import ProductReviews from "@/components/product/ProductReviews";
-import { auth, currentUser } from "@clerk/nextjs/server";
-import { getUser } from "@/lib/actions/user.action";
-import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
 
 interface ProductPageProps {
   params: {
@@ -18,6 +14,7 @@ interface ProductPageProps {
 }
 
 const page = async ({ params }: ProductPageProps) => {
+  const { userId } = await auth();
   const product = await getProduct(params.productId);
 
   return (
@@ -36,7 +33,8 @@ const page = async ({ params }: ProductPageProps) => {
           </span>
           <div className="flex justify-between items-center">
             <p className="flex items-center gap-x-1 text-sm">
-              {product.ratings || 0} <Star className="h-4 w-4 text-primary" />
+              {formatRating(product.ratings || 0)}{" "}
+              <Star className="h-4 w-4 text-primary" />
             </p>
             <p className="text-slate-700 text-sm">{product.sold || 0} sold</p>
           </div>
@@ -54,12 +52,14 @@ const page = async ({ params }: ProductPageProps) => {
         <h2 className="page-title mb-4">Product Reviews</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <ProductReviews productId={product._id} />
-          <div className="max-md:order-first">
-            <ProductReviewForm
-              productId={product._id}
-              rating={product.ratings}
-            />
-          </div>
+          {userId && (
+            <div className="max-md:order-first">
+              <ProductReviewForm
+                productId={product._id}
+                rating={product.ratings}
+              />
+            </div>
+          )}
         </div>
       </div>
     </section>

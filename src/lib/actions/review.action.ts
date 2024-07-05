@@ -5,6 +5,7 @@ import { connectToDB } from "../mongoose";
 import { parseJSON } from "../utils";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { Product } from "../models/product.model";
 
 export const getReviews = async (productId: string) => {
   try {
@@ -12,7 +13,7 @@ export const getReviews = async (productId: string) => {
 
     const res = await Review.find({
       productId,
-    });
+    }).sort({ createdBy: -1 });
 
     if (!res) throw new Error("No product reviews found");
 
@@ -51,21 +52,31 @@ export const createReview = async (
 
     if (!userId) redirect("/sign-in");
 
+    const product = await Product.findById(productId);
+
     const filter = {
       userId,
       productId,
     };
 
-    const review = await Review.findOneAndUpdate(
-      filter,
-      {
-        userId,
-        productId,
-        rating,
-        comment,
-      },
-      { upsert: true, new: true }
-    );
+    const review = new Review({
+      userId,
+      productId,
+      rating,
+      comment,
+    });
+
+    await review.save();
+
+    if (review) {
+      const averageRatings = product.ratings
+        ? (product.ratings + rating) / 2
+        : rating;
+
+      await Product.findByIdAndUpdate(productId, {
+        ratings: averageRatings,
+      });
+    }
 
     revalidatePath(`/products/${productId}`);
   } catch (error: any) {
