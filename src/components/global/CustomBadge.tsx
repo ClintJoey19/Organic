@@ -7,18 +7,20 @@ const bgColorVariants = cva(
   {
     variants: {
       variant: {
-        pending: "bg-blue-100",
+        pending: "bg-blue-200",
         shipping: "bg-orange-100",
-        delivered: "bg-primary/15",
+        delivered: "bg-green-200",
         received: "bg-primary",
         reviewed: "bg-yellow-100",
       },
     },
-    defaultVariants: {},
+    defaultVariants: {
+      variant: "pending",
+    },
   }
 );
 
-const textColorVariants = cva("", {
+const textColorVariants = cva("text-sm font-medium capitalize", {
   variants: {
     variant: {
       pending: "text-blue-500",
@@ -44,13 +46,7 @@ const CustomBadge = ({ variant }: CustomBadgeProps) => {
   return (
     <div className={cn(bgColorVariants({ variant }))}>
       <Dot className={`${cn(textColorVariants({ variant }))} h-5 w-5`} />
-      <span
-        className={`text-sm font-medium ${cn(
-          textColorVariants({ variant })
-        )} capitalize`}
-      >
-        {variant}
-      </span>
+      <span className={cn(textColorVariants({ variant }))}>{variant}</span>
     </div>
   );
 };

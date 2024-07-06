@@ -152,3 +152,10 @@ export const nameSort = [
     value: "price-desc",
   },
 ];
+
+export const paymentMode = {
+  cod: "Cash on Delivery",
+  card: "Card",
+};
+
+export const statusItems = ["pending", "shipping", "delivered", "received"];

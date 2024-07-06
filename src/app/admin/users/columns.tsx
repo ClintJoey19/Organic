@@ -14,12 +14,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { deleteProduct } from "@/lib/actions/product.action";
 import toast from "react-hot-toast";
-import { Order } from "./page";
-import { deleteOrder } from "@/lib/actions/order.action";
+import { IUsersAdmin } from "@/components/admin/users/UsersTable";
+import { deleteUser } from "@/lib/actions/user.action";
 
-export const columns: ColumnDef<Order>[] = [
+export const columns: ColumnDef<IUsersAdmin>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -43,64 +42,41 @@ export const columns: ColumnDef<Order>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "_id",
-    header: "Order Id",
-    cell: ({ row }) => <div className="">{row.getValue("_id")}</div>,
+    accessorKey: "clerkId",
+    header: "Clerk Id",
+    cell: ({ row }) => <div className="">{row.getValue("clerkId")}</div>,
   },
   {
-    accessorKey: "userId",
-    header: "User Id",
-    cell: ({ row }) => <div className="">{row.getValue("userId")}</div>,
+    accessorKey: "firstname",
+    header: "First Name",
+    cell: ({ row }) => <div className="">{row.getValue("firstname")}</div>,
   },
   {
-    accessorKey: "total",
-    header: "Total",
-    cell: ({ row }) => (
-      <div className="">{formatPrice(row.getValue("total") || 0)}</div>
-    ),
+    accessorKey: "lastname",
+    header: "Last Name",
+    cell: ({ row }) => <div className="">{row.getValue("lastname")}</div>,
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
-    ),
+    accessorKey: "email",
+    header: "Email",
+    cell: ({ row }) => <div className="">{row.getValue("email")}</div>,
   },
   {
-    accessorKey: "payment",
-    header: "Payment",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("payment")}</div>
-    ),
-  },
-  {
-    accessorKey: "arrival",
-    header: "Arrival",
-    cell: ({ row }) => {
-      const {
-        day,
-        month,
-        year,
-      }: {
-        day: number;
-        month: number;
-        year: number;
-      } = row.getValue("arrival");
-
-      return <div>{formatDate2(day, month, year)}</div>;
-    },
+    accessorKey: "role",
+    header: "Role",
+    cell: ({ row }) => <div className="capitalize">{row.getValue("role")}</div>,
   },
   {
     id: "actions",
     header: "Actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const order = row.original;
+      const user = row.original;
 
       const onDelete = async () => {
         try {
-          await deleteOrder(order._id);
-          toast.success("Order deleted");
+          // await deleteUser(user?._id);
+          // toast.success("User deleted");
         } catch (error: any) {
           console.error(error.message);
           toast.error(error.message);
@@ -118,7 +94,7 @@ export const columns: ColumnDef<Order>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem asChild>
-              <Link href={`/admin/transactions/${order._id}`}>View</Link>
+              <Link href={`/admin/users/${user._id}`}>View</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={onDelete}>Delete</DropdownMenuItem>

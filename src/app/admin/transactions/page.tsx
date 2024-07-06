@@ -37,7 +37,6 @@ export interface Orders {
 const page = async ({ searchParams }: SearchParams) => {
   const currentPage = Number(searchParams.page) || 1;
   const orders: Orders | undefined = await getOrders(currentPage);
-  console.log(orders);
 
   return (
     <section className="w-full p-4">

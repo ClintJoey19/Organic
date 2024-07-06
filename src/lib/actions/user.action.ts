@@ -1,9 +1,11 @@
 "use server";
+import { revalidatePath } from "next/cache";
 import { User } from "../models/user";
 import { connectToDB } from "../mongoose";
 import { parseJSON } from "../utils";
 
 export interface IUser {
+  _id?: string;
   clerkId: string;
   firstname: string;
   lastname: string;
@@ -65,5 +67,17 @@ export const addUser = async (user: IUser) => {
     return parseJSON(res);
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const deleteUser = async (id: string) => {
+  try {
+    await connectToDB();
+
+    await User.findByIdAndDelete(id);
+
+    revalidatePath("/admin/users");
+  } catch (error: any) {
+    console.error(error.message);
   }
 };

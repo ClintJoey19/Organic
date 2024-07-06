@@ -2,6 +2,7 @@ import AddProduct from "@/components/admin/products/AddProduct";
 import { ProductsTable } from "@/components/admin/products/ProductsTable";
 import { getProducts } from "@/lib/actions/product.action";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Admin | Products",
@@ -34,6 +35,8 @@ interface ProductsAdmin {
 const page = async ({ searchParams }: SearchParams) => {
   const page = Number(searchParams.page) || 1;
   const { data, hasNextPage }: ProductsAdmin = await getProducts({ page });
+
+  if (!data || data.length === 0) redirect("/admin/products");
 
   return (
     <section className="w-full p-4 flex flex-col">

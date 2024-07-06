@@ -3,12 +3,7 @@ import Order from "./Order";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
-export type Status =
-  | "pending"
-  | "shipping"
-  | "delivered"
-  | "received"
-  | "reviewed";
+export type Status = "pending" | "shipping" | "delivered" | "received";
 
 export type PaymentMethod = "cod" | "card";
 
