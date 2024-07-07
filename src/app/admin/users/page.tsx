@@ -1,5 +1,6 @@
 import UsersTable, { IUsersAdmin } from "@/components/admin/users/UsersTable";
 import { getUsers, IUser } from "@/lib/actions/user.action";
+import { isAdmin } from "@/lib/utils";
 import { Metadata } from "next";
 import React from "react";
 
@@ -19,6 +20,8 @@ interface IUsers {
 }
 
 const page = async ({ searchParams }: SearchParams) => {
+  await isAdmin();
+
   const currentPage = Number(searchParams.page) || 1;
   const users: IUsers | undefined = await getUsers(currentPage);
 

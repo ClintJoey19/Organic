@@ -3,7 +3,7 @@ import UserInfo from "@/components/admin/transactions/[transactionId]/UserInfo";
 import OrderSteps from "@/components/global/OrderSteps";
 import { IOrder } from "@/components/transactions/orders/Orders";
 import { getOrder } from "@/lib/actions/order.action";
-import { formatDate2, formatPrice } from "@/lib/utils";
+import { formatDate2, formatPrice, isAdmin } from "@/lib/utils";
 import { ScrollText, Truck, UserRound } from "lucide-react";
 import React from "react";
 import OrderStatusForm from "./forms/OrderStatusForm";
@@ -22,6 +22,8 @@ const page = async ({
     transactionId: string;
   };
 }) => {
+  await isAdmin();
+
   const id = params.transactionId;
   const transaction: AdminOrder = await getOrder(id);
   const { day, month, year } = transaction.arrival;
@@ -32,7 +34,7 @@ const page = async ({
         Order <span className="text-slate-500">#{transaction._id}</span>
       </h2>
       <OrderSteps variant={transaction.status} label={transaction.status} />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
         <div className="flex flex-col gap-4">
           <SectionHeader label="User Information" iconLabel={<UserRound />} />
           <div className="bg-slate-200 rounded-md p-4">

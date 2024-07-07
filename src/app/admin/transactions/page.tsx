@@ -1,5 +1,6 @@
 import TransactionsTable from "@/components/admin/transactions/TransactionsTable";
 import { getOrders } from "@/lib/actions/order.action";
+import { isAdmin } from "@/lib/utils";
 import { Metadata } from "next";
 import React from "react";
 
@@ -35,6 +36,8 @@ export interface Orders {
 }
 
 const page = async ({ searchParams }: SearchParams) => {
+  await isAdmin();
+
   const currentPage = Number(searchParams.page) || 1;
   const orders: Orders | undefined = await getOrders(currentPage);
 

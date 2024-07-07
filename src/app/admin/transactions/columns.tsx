@@ -87,7 +87,7 @@ export const columns: ColumnDef<Order>[] = [
         year: number;
       } = row.getValue("arrival");
 
-      return <div>{formatDate2(day, month, year)}</div>;
+      return <div>{formatDate2(month, day, year)}</div>;
     },
   },
   {

@@ -1,9 +1,17 @@
+import { currentUser } from "@clerk/nextjs/server";
 import { type ClassValue, clsx } from "clsx";
+import { redirect } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+export const isAdmin = async () => {
+  const user = await currentUser();
+
+  if (user?.publicMetadata.role !== "admin") redirect("/");
+};
 
 export const parseJSON = (json: any) => {
   return JSON.parse(JSON.stringify(json));

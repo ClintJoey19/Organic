@@ -130,3 +130,15 @@ export const deleteProduct = async (id: string) => {
     console.error(error.message);
   }
 };
+
+export const getProductsCount = async () => {
+  try {
+    await connectToDB();
+
+    const count = await Product.countDocuments();
+
+    return count;
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};

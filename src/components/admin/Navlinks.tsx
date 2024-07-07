@@ -17,7 +17,7 @@ const Navlinks = () => {
             href={link.href}
             className={`w-full flex justify-start py-2 px-4 ${
               isActive && "bg-green-100 text-primary"
-            } rounded-md`}
+            } rounded-md hover:bg-green-100 hover:text-primary transition`}
           >
             <link.iconLabel className="mr-2" />
             {link.label}

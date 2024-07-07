@@ -44,7 +44,6 @@ interface OrderStepsProps extends BgColorVariantsProps, TextColorVariantsProps {
 
 const OrderSteps = ({ variant, label }: OrderStepsProps) => {
   const step = statusItems.indexOf(label);
-  console.log(step);
 
   return (
     <div className="w-full flex justify-center items-center relative">

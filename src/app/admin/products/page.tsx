@@ -1,6 +1,7 @@
 import AddProduct from "@/components/admin/products/AddProduct";
 import { ProductsTable } from "@/components/admin/products/ProductsTable";
 import { getProducts } from "@/lib/actions/product.action";
+import { isAdmin } from "@/lib/utils";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
@@ -33,6 +34,8 @@ interface ProductsAdmin {
 }
 
 const page = async ({ searchParams }: SearchParams) => {
+  await isAdmin();
+
   const page = Number(searchParams.page) || 1;
   const { data, hasNextPage }: ProductsAdmin = await getProducts({ page });
 

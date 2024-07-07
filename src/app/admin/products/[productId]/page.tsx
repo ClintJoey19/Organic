@@ -8,6 +8,7 @@ import ProductStocksForm from "@/components/admin/products/forms/ProductStocksFo
 import ProductTitleForm from "@/components/admin/products/forms/ProductTitleForm";
 import { Button } from "@/components/ui/button";
 import { getProduct } from "@/lib/actions/product.action";
+import { isAdmin } from "@/lib/utils";
 import { ArrowLeft, DollarSign, Image, Sprout } from "lucide-react";
 import Link from "next/link";
 
@@ -18,6 +19,8 @@ interface ProductProps {
 }
 
 const page = async ({ params }: ProductProps) => {
+  await isAdmin();
+
   const product = await getProduct(params.productId);
 
   const requiredFields = [

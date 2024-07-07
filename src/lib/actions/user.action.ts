@@ -42,6 +42,20 @@ export const getUsers = async (page = 1) => {
   }
 };
 
+export const getUserById = async (id: string) => {
+  try {
+    await connectToDB();
+
+    const user = await User.findById(id);
+
+    if (!user) throw new Error("No user found");
+
+    return parseJSON(user);
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
 export const getUser = async (clerkId: string) => {
   try {
     await connectToDB();
@@ -77,6 +91,18 @@ export const deleteUser = async (id: string) => {
     await User.findByIdAndDelete(id);
 
     revalidatePath("/admin/users");
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
+export const getUsersCount = async () => {
+  try {
+    await connectToDB();
+
+    const count = await User.countDocuments();
+
+    return count;
   } catch (error: any) {
     console.error(error.message);
   }

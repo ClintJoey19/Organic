@@ -15,7 +15,10 @@ export const getOrders = async (page = 1) => {
 
     const ordersCount = await Order.countDocuments();
 
-    const res = await Order.find().limit(limit).skip(skip);
+    const res = await Order.find()
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .skip(skip);
 
     if (!res) throw new Error("There was an error fetching the orders");
 
@@ -37,7 +40,7 @@ export const getUserOrders = async (userId: string, isCompleted: boolean) => {
     const res = await Order.find({
       userId: userId,
       status: { $in: isCompleted ? completedStatus : pendingStatus },
-    }).sort({ createdAt: -1 });
+    }).sort({ createdAt: 1 });
 
     if (!res) throw new Error("There was an error fetching the orders");
 
@@ -125,6 +128,33 @@ export const deleteOrder = async (id: string) => {
 
     await Order.findByIdAndDelete(id);
     revalidatePath("/transactions");
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
+export const getOrdersCount = async () => {
+  try {
+    await connectToDB();
+
+    const count = await Order.countDocuments();
+
+    return count;
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
+export const getTotalSales = async (): Promise<number | undefined> => {
+  try {
+    await connectToDB();
+
+    const salesTotal = await Order.aggregate([
+      { $match: { status: { $in: ["delivered", "received"] } } },
+      { $group: { _id: null, total: { $sum: "$total" } } },
+    ]);
+
+    return salesTotal[0].total;
   } catch (error: any) {
     console.error(error.message);
   }
