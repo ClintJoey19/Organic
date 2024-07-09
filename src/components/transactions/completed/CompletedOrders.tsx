@@ -1,9 +1,11 @@
 import { getUserOrders } from "@/lib/actions/order.action";
 import Order from "../orders/Order";
 import { IOrder } from "../orders/Orders";
+import { auth } from "@clerk/nextjs/server";
 
-const CompletedOrders = async ({ userId }: { userId: string }) => {
-  const completedOrders: IOrder[] = await getUserOrders(userId, true);
+const CompletedOrders = async () => {
+  const user = await auth();
+  const completedOrders: IOrder[] = await getUserOrders(user?.userId, true);
 
   return (
     <div className="flex flex-col gap-4">

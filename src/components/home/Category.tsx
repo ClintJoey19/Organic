@@ -14,7 +14,7 @@ const Category = ({ label, href, imageUrl }: CategoryProps) => {
   return (
     <div className="flex-1 flex rounded-md hover:shadow-md transition overflow-hidden relative">
       <div className="w-full h-[300px] relative">
-        <Image src={imageUrl} alt={label} fill objectFit="cover" />
+        <Image src={imageUrl} alt={label} fill className="object-cover" />
       </div>
       <div className="absolute top-0 left-0 h-full w-full flex flex-col gap-2 items-center justify-center bg-black/30 opacity-0 hover:opacity-100 transition">
         <h3 className="text-2xl font-semibold drop-shadow text-white">

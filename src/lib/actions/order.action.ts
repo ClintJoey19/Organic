@@ -30,7 +30,10 @@ export const getOrders = async (page = 1) => {
   }
 };
 
-export const getUserOrders = async (userId: string, isCompleted: boolean) => {
+export const getUserOrders = async (
+  userId: string | null,
+  isCompleted: boolean
+) => {
   try {
     await connectToDB();
 

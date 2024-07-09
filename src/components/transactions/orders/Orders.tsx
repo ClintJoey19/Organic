@@ -21,8 +21,10 @@ export interface IOrder {
   };
 }
 
-const Orders = async ({ userId }: { userId: string }) => {
-  const orders: IOrder[] = await getUserOrders(userId, false);
+const Orders = async () => {
+  const user = await auth();
+
+  const orders: IOrder[] = await getUserOrders(user?.userId, false);
 
   return (
     <div className="flex flex-col gap-4">

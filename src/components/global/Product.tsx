@@ -45,8 +45,7 @@ const Product = ({
           src={productImg}
           alt={name}
           fill
-          objectFit="cover"
-          className="hover:scale-110 transition"
+          className="object-cover hover:scale-110 transition"
         />
       </div>
       <div className="flex flex-col gap-2 p-2">

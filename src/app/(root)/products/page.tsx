@@ -1,10 +1,10 @@
-import PaginationPage from "@/components/global/PaginationPage";
-import Product from "@/components/global/Product";
 import SelectFilter from "@/components/global/SelectFilter";
+import ProductsLoading from "@/components/loading-states/ProductsLoading";
+import Products from "@/components/products/Products";
 import ProductsController from "@/components/products/ProductsController";
 import { categoryFilters, nameSort } from "@/constants";
-import { getProducts } from "@/lib/actions/product.action";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Products",
@@ -34,19 +34,11 @@ export interface ProductClient {
   hasNextPage: boolean;
 }
 
-const page = async ({ searchParams }: SearchParams) => {
+const page = ({ searchParams }: SearchParams) => {
   const currentPage = Number(searchParams.page) || 1;
   const filterCategory = searchParams.category || "";
   const sortName = searchParams.sort || "";
   const sortDir = searchParams.dir || "";
-
-  const { data, hasNextPage }: ProductClient = await getProducts({
-    page: currentPage,
-    isPublished: true,
-    category: filterCategory,
-    sort: sortName,
-    dir: sortDir,
-  });
 
   return (
     <section className="flex relative">
@@ -80,21 +72,14 @@ const page = async ({ searchParams }: SearchParams) => {
       </div>
       <div className="w-full flex flex-col gap-4 p-4">
         <h2 className="page-title">Products</h2>
-        <div className="grid grid-cols-5 max-xl:grid-cols-4 max-lg:grid-cols-3 max-sm:grid-cols-2 max-xs:grid-cols-1 gap-4">
-          {data.map((product) => (
-            <Product
-              key={product._id}
-              id={product._id}
-              name={product.name}
-              category={product.category}
-              price={product.price}
-              stocks={product.stocks}
-              productImg={product.productImg}
-              ratings={product.ratings}
-            />
-          ))}
-        </div>
-        <PaginationPage hasNextPage={hasNextPage} />
+        <Suspense fallback={<ProductsLoading />}>
+          <Products
+            currentPage={currentPage}
+            filterCategory={filterCategory}
+            sortName={sortName}
+            sortDir={sortDir}
+          />
+        </Suspense>
       </div>
     </section>
   );

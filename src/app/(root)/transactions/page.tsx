@@ -1,9 +1,9 @@
 import Tab from "@/components/global/Tab";
+import OrdersLoading from "@/components/loading-states/OrdersLoading";
 import CompletedOrders from "@/components/transactions/completed/CompletedOrders";
 import Orders from "@/components/transactions/orders/Orders";
-import { auth } from "@clerk/nextjs/server";
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Transactions",
@@ -15,11 +15,7 @@ interface SearchParams {
   };
 }
 
-const page = async ({ searchParams }: SearchParams) => {
-  const { userId } = await auth();
-
-  if (!userId) redirect("/");
-
+const page = ({ searchParams }: SearchParams) => {
   const currentPage = searchParams.page || "orders";
 
   return (
@@ -32,8 +28,16 @@ const page = async ({ searchParams }: SearchParams) => {
         </div>
       </div>
       <div>
-        {currentPage === "orders" && <Orders userId={userId} />}
-        {currentPage === "completed" && <CompletedOrders userId={userId} />}
+        {currentPage === "orders" && (
+          <Suspense fallback={<OrdersLoading />}>
+            <Orders />
+          </Suspense>
+        )}
+        {currentPage === "completed" && (
+          <Suspense fallback={<OrdersLoading />}>
+            <CompletedOrders />
+          </Suspense>
+        )}
       </div>
     </section>
   );
