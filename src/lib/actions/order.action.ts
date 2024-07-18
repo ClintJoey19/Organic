@@ -2,9 +2,12 @@
 import { revalidatePath } from "next/cache";
 import { Order } from "../models/order.model";
 import { connectToDB } from "../mongoose";
-import { calculateArrivalDate, parseJSON } from "../utils";
+import { calculateArrivalDate, isAdmin, parseJSON } from "../utils";
 import { deleteAllCheckedItems } from "./cart-item.action";
 import { createOrderItem } from "./order-item.action";
+
+const pendingStatus = ["pending", "shipping", "delivered"];
+const completedStatus = ["received", "reviewed"];
 
 export const getOrders = async (page = 1) => {
   try {
@@ -36,9 +39,6 @@ export const getUserOrders = async (
 ) => {
   try {
     await connectToDB();
-
-    const pendingStatus = ["pending", "shipping", "delivered"];
-    const completedStatus = ["received", "reviewed"];
 
     const res = await Order.find({
       userId: userId,
@@ -143,6 +143,39 @@ export const getOrdersCount = async () => {
     const count = await Order.countDocuments();
 
     return count;
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
+export const getDailyMonthSales = async (month: number, year: number) => {
+  try {
+    await isAdmin();
+
+    await connectToDB();
+
+    const startDate = new Date(year, 6, 1);
+    const endDate = new Date(year, 7, 0);
+
+    const pipeline = [
+      {
+        $match: {
+          arrival: {
+            month,
+            year,
+          }, // Filter by arrival month and creation date
+        },
+      },
+      {
+        $group: {
+          _id: { day: { $dayOfMonth: "$createdAt" } },
+          totalSales: { $sum: "$total" }, // Sum the total for each day
+        },
+      },
+    ];
+
+    const sales = await Order.aggregate(pipeline);
+    return parseJSON(sales);
   } catch (error: any) {
     console.error(error.message);
   }

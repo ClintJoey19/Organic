@@ -5,7 +5,7 @@ import CustomBadge from "@/components/global/CustomBadge";
 import { PaymentMethod, Status } from "./Orders";
 import { ArrowBigRight, MapPin, Truck } from "lucide-react";
 import Image from "next/image";
-import { formatPrice } from "@/lib/utils";
+import { months, formatPrice } from "@/lib/utils";
 import OrderActions from "./OrderActions";
 
 export interface OrderProps {
@@ -39,19 +39,6 @@ const Order = async ({
   arrival,
 }: OrderProps) => {
   const orderItems: OrderItems[] = await getOrderItems(id);
-  const date = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "May",
-    "June",
-    "July",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
 
   const pendingStatus = ["pending", "shipping", "delivered"];
   const paymentMethod = {
@@ -110,7 +97,7 @@ const Order = async ({
             </div>
             <div className="border border-slate-300 py-2 px-3 rounded-md">
               <p className="text-sm">
-                Estimated arrival: {date[arrival.month - 1]} {arrival.day},{" "}
+                Estimated arrival: {months[arrival.month - 1]} {arrival.day},{" "}
                 {arrival.year}
               </p>
             </div>

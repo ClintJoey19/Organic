@@ -33,6 +33,20 @@ export const formatRating = (ratings: number) => {
   return !ratings ? 0 : ratings.toFixed(1);
 };
 
+export const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "May",
+  "June",
+  "July",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
 export const formatDate = (dateString: string) => {
   const date = new Date(dateString);
 

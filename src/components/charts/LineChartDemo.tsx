@@ -2,7 +2,6 @@
 
 import { TrendingUp } from "lucide-react";
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
-
 import {
   Card,
   CardContent,
@@ -17,6 +16,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { months } from "@/lib/utils";
 const chartData = [
   { month: "January", desktop: 186 },
   { month: "February", desktop: 305 },
@@ -33,12 +33,21 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function LineChartDemo() {
+interface LineChartDemo {
+  date: Date;
+}
+
+export default function LineChartDemo({ date }: LineChartDemo) {
+  const month = months[date.getMonth() + 1];
+  const year = date.getFullYear();
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Sales</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Daily Month Sales</CardTitle>
+        <CardDescription>
+          {month} {year}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>

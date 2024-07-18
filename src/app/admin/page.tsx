@@ -1,11 +1,10 @@
 import CardAnalytics from "@/components/admin/CardAnalytics";
 import { isAdmin } from "@/lib/utils";
 import { Apple, ClipboardList, DollarSign, Users } from "lucide-react";
-import LineChartDemo from "@/components/charts/LineChartDemo";
-import React from "react";
 import { getUsersCount } from "@/lib/actions/user.action";
 import { getProductsCount } from "@/lib/actions/product.action";
 import { getOrdersCount, getTotalSales } from "@/lib/actions/order.action";
+import MonthlySales from "@/components/admin/MonthlySales";
 
 const page = async () => {
   await isAdmin();
@@ -40,9 +39,7 @@ const page = async () => {
           }
         />
       </div>
-      <div className="w-full">
-        <LineChartDemo />
-      </div>
+      <MonthlySales />
     </section>
   );
 };
