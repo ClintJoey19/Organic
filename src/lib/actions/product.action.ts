@@ -142,3 +142,17 @@ export const getProductsCount = async () => {
     console.error(error.message);
   }
 };
+
+export const getHighestSoldProducts = async (limit: number) => {
+  try {
+    await connectToDB();
+
+    const products = await Product.find().sort({ sold: -1 }).limit(limit);
+
+    if (!products) throw new Error("Products not found");
+
+    return parseJSON(products);
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};

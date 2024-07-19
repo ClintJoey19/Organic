@@ -1,17 +1,17 @@
 import React from "react";
-import LineChartDemo from "../charts/LineChartDemo";
-import { getDailyMonthSales } from "@/lib/actions/order.action";
+import { ProductsSoldChart } from "../charts/ProductsSoldChart";
+import { getHighestSoldProducts } from "@/lib/actions/product.action";
+import { Product } from "./products/ProductsTable";
 
 const MonthlySales = async () => {
+  const products: Product[] = await getHighestSoldProducts(5);
   const date = new Date();
-  const month = date.getMonth() + 1;
+  const month = date.getMonth();
   const year = date.getFullYear();
-  const sales = await getDailyMonthSales(month, year);
-  console.log(sales);
 
   return (
     <div className="w-full">
-      <LineChartDemo date={date} />
+      <ProductsSoldChart data={products} month={month} year={year} />
     </div>
   );
 };
