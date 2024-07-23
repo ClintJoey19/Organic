@@ -34,12 +34,15 @@ const page = async ({ searchParams }: SearchParams) => {
 
   if (!userId) redirect("/");
 
+  const { productId, price, quantity, cart } = searchParams;
+
+  if (!productId || !cart) redirect("/");
+
   const user: IUser = await getUser(userId);
 
   if (!user) redirect("/onboarding");
 
   const { baranggay, municipality, province, zipcode, phoneNumber } = user;
-  const { productId, price, quantity, cart } = searchParams;
 
   const cartItems = await getCheckedItems(cart);
   const products =
